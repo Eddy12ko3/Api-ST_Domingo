@@ -1,6 +1,6 @@
 import { DataSource } from "typeorm";
-import { User } from "./models/user";
-import { Producto } from "./models/producto";
+import { UserDB } from "./models/user";
+import { ProductoDB  } from "./models/producto";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
@@ -11,7 +11,7 @@ export const AppDataSource = new DataSource({
     database: "apitest",
     synchronize: true,
     logging: true,
-    entities: [User, Producto],
+    entities: [UserDB, ProductoDB],
     subscribers: [],
     migrations: [],
 })
