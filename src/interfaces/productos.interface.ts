@@ -1,6 +1,6 @@
 export interface Producto{
-    nombre: string, 
-    precio: number,
-    cantidad: number
-    estado: boolean
+    name: string, 
+    price: number,
+    quantity: number
+    state: boolean
 }

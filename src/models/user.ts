@@ -1,15 +1,19 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { PersonaDB } from "./persona";
 
 @Entity()
+@Unique(["dni"])
 export class UserDB{
     @PrimaryGeneratedColumn('increment')
-    id: number;
-    @Column()
-    nombre: string;
+    userId: number;
     @Column()
     dni: number;
     @Column()
-    email: string;
-    @Column()
     password: string;
+    
+    @OneToOne((type) => PersonaDB, (person) => person.personId, {
+        cascade: true,  
+    })
+    @JoinTable({ name: "personId" })
+    persons: PersonaDB[]
 }
