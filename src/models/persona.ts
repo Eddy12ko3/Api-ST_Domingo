@@ -1,7 +1,6 @@
 import { Column, CreateDateColumn, Entity, JoinColumn, ManyToMany, ManyToOne, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { SexoDB } from "./sexo";
 import { TipoDocumentoDB } from "./tipo_documento";
-import { AddressDB } from "./direccion";
 
 @Entity()
 export class PersonaDB{
@@ -27,9 +26,6 @@ export class PersonaDB{
     @ManyToOne(() => TipoDocumentoDB, tipoDocumento => tipoDocumento.persons)
     @JoinColumn({ name: "tipoDocId"})
     tipoDocumento: TipoDocumentoDB;
-
-    @ManyToMany(() => AddressDB, address => address.persons)
-    address: AddressDB[];
 
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" }) // Campo de creación
     created_at: Date;

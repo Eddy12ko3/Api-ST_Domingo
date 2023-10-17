@@ -19,7 +19,7 @@ const GetProducts = async () =>{
 }
 
 const GetProduct = async (id: string) =>{
-    const responseProduct =  await AppDataSource.getRepository(ProductoDB).createQueryBuilder("ProductoDB").where("ProductoDB.id = :id", {id:id}).getOne();
+    const responseProduct =  await AppDataSource.getRepository(ProductoDB).createQueryBuilder("ProductoDB").where("ProductoDB.productoId = :id", {id:id}).getOne();
     return responseProduct;
 }
 

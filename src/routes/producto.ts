@@ -3,9 +3,9 @@ import { deleteProduct, getProduct, getProducts, postProduct, updateProduct } fr
 import { logMiddleware } from "../middleware/log";
 
 const router = Router()
-router.get("/",logMiddleware, getProducts)
-router.get("/:id", getProduct)
-router.post("/", postProduct)
+router.get("/load",logMiddleware, getProducts)
+router.get("/load/:id", getProduct)
+router.post("/create", postProduct)
 router.put("/:id", updateProduct)
 router.delete("/:id", deleteProduct)
 

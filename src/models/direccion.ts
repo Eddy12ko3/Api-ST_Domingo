@@ -1,4 +1,4 @@
-import { Column, Entity, JoinColumn, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 import { PersonaDB } from "./persona";
 
 @Entity()
@@ -9,7 +9,7 @@ export class AddressDB{
     @Column()
     description: string;
 
-    @ManyToMany(() => PersonaDB, personadb => personadb.address)
-    @JoinColumn({name: "personId"})
-    persons: PersonaDB
+    @ManyToMany(() => PersonaDB)
+    @JoinTable()
+    persons: PersonaDB[]
 }

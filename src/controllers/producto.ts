@@ -45,10 +45,10 @@ const updateProduct = async (req: Request, res: Response) =>{
     }
 }
 
-const postProduct = async ({body}: Request, res: Response) =>{
+const postProduct = async (request: Request, res: Response) =>{
     try{
-        const response = await InsertProduct(body)
-        console.log(response)
+        const response = await InsertProduct(request.body)
+        console.log(request.body)
         return res.status(200).json({message: "insertado correctamente"})
     }catch(e){
         handleHttp(res, "ERR_POST_PRODUCT", e)
