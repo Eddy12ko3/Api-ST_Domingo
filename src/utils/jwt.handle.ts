@@ -13,8 +13,4 @@ const verifyToken = (jwt: string) =>{
         return isOk;
 };
 
-const dataToken = (jwt: string) =>{
-    const data = decode(jwt, JWT_SECRET)
-}
-
 export{ generateToken, verifyToken}

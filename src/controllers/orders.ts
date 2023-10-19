@@ -8,6 +8,7 @@ interface RequestExt extends Request{
 
 const getItems = async (req: RequestExt, res: Response) =>{
     try{
+        if(req.body.usertoken)
        res.send({
         data: "esto es observable para usuarios con sesion jwt",
         user: req.user
