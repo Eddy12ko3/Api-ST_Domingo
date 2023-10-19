@@ -47,9 +47,10 @@ const updateProduct = async (req: Request, res: Response) =>{
 
 const postProduct = async (request: Request, res: Response) =>{
     try{
-        const response = await InsertProduct(request.body)
-        console.log(request.body)
-        return res.status(200).json({message: "insertado correctamente"})
+        const {nombre, precio, cantidad, estado} = request.body
+        const response = await InsertProduct({name: nombre, price: precio, quantity: cantidad, state: estado})
+        
+        return res.status(200).json(response)
     }catch(e){
         handleHttp(res, "ERR_POST_PRODUCT", e)
     }

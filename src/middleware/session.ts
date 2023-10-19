@@ -9,17 +9,16 @@ const checkJwt = (req: RequestExt, res: Response, next: NextFunction) =>{
     try{
         const jwtByUser = req.headers.authorization || '';
         const jwt = jwtByUser.split(" ").pop();
-        const isUser = verifyToken(`${jwt}`);
+        if(!jwt) return "token not found"
 
-        if(!isUser) {
+        const decode = verifyToken(jwt);
+
+        if(!decode) {
             res.status(401);
             res.send("JWT_INVALID")
-        }else{
-            req.user = isUser
-            next();
         }
-        console.log({jwtByUser})
-        next();
+        
+        req.body.usertoken = decode;
     }catch(e){
         res.status(400);
         res.send("INVALID_SESSION")

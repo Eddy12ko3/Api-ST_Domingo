@@ -4,6 +4,6 @@ export interface User extends Auth{
     name: string;
     lastname: string;
     date_birth: Date;
-    gender: string;
-    document: string;
+    gender: number;
+    document: number;
 }
