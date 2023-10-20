@@ -13,8 +13,11 @@ const registerCtrl = async ({body}: Request, res: Response) =>{
 
 const loginCtrl = async ({body}: Request, res: Response) =>{
     try{
+        console.log("123456")
+
         const {dni, password} = body;
         const responseUser = await loginUser({dni, password})
+        console.log(responseUser)
         return res.status(200).json(responseUser)
     }catch(e){
         handleHttp(res, "ERR_LOGIN_USER", e)

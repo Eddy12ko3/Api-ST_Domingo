@@ -9,8 +9,8 @@ const checkJwt = (req: RequestExt, res: Response, next: NextFunction) =>{
     try{
         const jwtByUser = req.headers.authorization || '';
         const jwt = jwtByUser.split(" ").pop();
-        if(!jwt) return "token not found"
-
+        if(!jwt) return res.status(401).json({ message: "TOKEN_INVALID"})
+        
         const decode = verifyToken(jwt);
 
         if(!decode) {
