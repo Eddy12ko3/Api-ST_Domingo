@@ -42,9 +42,6 @@ export class PersonaDB{
     @OneToMany(() => DetailPaymentDB, (detailpayment) => detailpayment.person)
     detailpayment: DetailPaymentDB[];
 
-    @OneToOne(() => AssociatesDB, associate => associate.persons)
-    associate: AssociatesDB;
-
     @CreateDateColumn({ type: "timestamp", default: () => "CURRENT_TIMESTAMP(6)" }) // Campo de creación
     created_at: Date;
     

@@ -1,13 +1,13 @@
 import { Router, Request, Response } from "express";
-import { deleteProduct, getProduct, getProducts, postProduct, updateProduct } from "../controllers/producto";
+import { productController} from "../controllers/producto";
 import { logMiddleware } from "../middleware/log";
 import { checkJwt } from "../middleware/session";
 
 const router = Router()
-router.get("/load",checkJwt, getProducts)
-router.get("/load/:id", getProduct)
-router.post("/create", postProduct)
-router.put("/:id", updateProduct)
-router.delete("/:id", deleteProduct)
+router.get("/load", productController.getProducts)
+router.get("/load/:id", productController.getProduct)
+router.post("/create", productController.postProduct)
+router.put("/:id", productController.updateProduct)
+router.delete("/:id", productController.deleteProduct)
 
 export{router}

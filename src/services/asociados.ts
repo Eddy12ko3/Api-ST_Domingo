@@ -27,7 +27,7 @@ const InsertAssociate = async ({folio, dni, name, lastname, date_birth, gender, 
     const newAssociate = new AssociatesDB();
     newAssociate.folio = folio;
     newAssociate.dni = dni;
-    newAssociate.persons = [newPerson]
+    newAssociate.persons = newPerson;
 
     const responseInsert = await AppDataSource.getRepository(AssociatesDB).save(newAssociate);
     return responseInsert
@@ -36,10 +36,16 @@ const InsertAssociate = async ({folio, dni, name, lastname, date_birth, gender, 
 
 const GetAssociates = async () =>{
     const responseAssociates = await AppDataSource.getRepository(AssociatesDB)
-        .createQueryBuilder("a")
-        .innerJoin("a.persons", "p")
-        .select(["a.folio", "p.name"])
-        .getMany()
+        .find({
+            // select: {
+            //     persons: {
+            //         name: true
+            //     }
+            // },
+            relations: {
+                persons: true
+            }
+        })
 
     return responseAssociates;
 };
@@ -68,7 +74,7 @@ const UpdateAssociates = async (id: string, {folio, name, lastname, date_birth, 
     const newAssociate = new AssociatesDB();
     newAssociate.associateId = parseInt(id);
     newAssociate.folio = folio;
-    newAssociate.persons = [newPerson]
+    newAssociate.persons = newPerson
 
     const responseAssociates = await AppDataSource.getRepository(AssociatesDB).save(newAssociate);
     return responseAssociates

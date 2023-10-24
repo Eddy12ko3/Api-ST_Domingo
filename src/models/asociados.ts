@@ -16,5 +16,6 @@ export class AssociatesDB{
     @OneToOne(() => PersonaDB, (person) => person.personId, {
         cascade: true,  
     })
-    persons: PersonaDB[]
+    @JoinColumn({name: "personId"})
+    persons: PersonaDB
 }

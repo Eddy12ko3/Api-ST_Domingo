@@ -13,7 +13,6 @@ const getAssociate = async (req: Request, res: Response) =>{
 const getAssociates = async (req: Request, res: Response) =>{
     try{
         const response = await GetAssociates();
-        console.log(response)
         if(response){
             return res.status(200).json(response);
         }else{

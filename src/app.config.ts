@@ -12,11 +12,12 @@ import { AreasMTSDB } from "./models/areas";
 import { StandsDB } from "./models/puestos";
 import { AssociatesDB } from "./models/asociados";
 import { DetailPaymentDB } from "./models/detalle_pago";
+import { WorkersDB } from "./models/trabajadores";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
-    port: 3307,
+    port: 3306,
     username: "root",
     password: "root",
     database: "apitest",
@@ -35,7 +36,8 @@ export const AppDataSource = new DataSource({
         AreasMTSDB,
         StandsDB,
         AssociatesDB,
-        DetailPaymentDB
+        DetailPaymentDB,
+        WorkersDB
     ],
     subscribers: [],
     migrations: [],
