@@ -1,5 +1,6 @@
-import { Column, Entity, JoinTable, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
-import { PersonaDB } from "./persona";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { SexoDB } from "./sexo";
+import { TipoDocumentoDB } from "./tipo_documento";
 
 @Entity()
 @Unique(["dni"])
@@ -11,9 +12,23 @@ export class UserDB{
     @Column()
     password: string;
     
-    @OneToOne((type) => PersonaDB, (person) => person.personId, {
-        cascade: true,  
-    })
-    @JoinTable({ name: "personId" })
-    persons: PersonaDB[]
+    @Column()
+    name: string;
+
+    @Column()
+    lastname: string;
+
+    @Column()
+    date_birth: Date;
+
+    @Column({default: 1})
+    state: number;
+    
+    @ManyToOne(() => SexoDB, sexo => sexo.user)
+    @JoinColumn({ name: "genderId" })
+    gender: SexoDB;
+
+    @ManyToOne(() => TipoDocumentoDB, (tipoDocumento) => tipoDocumento.users)
+    @JoinColumn({ name: "tipoDocId"})
+    tipoDocumento: TipoDocumentoDB;
 }

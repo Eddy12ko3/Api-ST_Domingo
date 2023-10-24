@@ -1,5 +1,6 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { PersonaDB } from "./persona";
+import { UserDB } from "./user";
 
 @Entity()
 export class TipoDocumentoDB{
@@ -11,4 +12,7 @@ export class TipoDocumentoDB{
 
     @OneToMany(() => PersonaDB, person => person.tipoDocumento)
     persons: PersonaDB[];
+
+    @OneToMany(() => UserDB, user => user.tipoDocumento)
+    users: UserDB[];
 }

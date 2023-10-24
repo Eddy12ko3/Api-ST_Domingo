@@ -1,15 +1,16 @@
-import {sign, verify, decode} from "jsonwebtoken"
+import jwt from "jsonwebtoken"
 
-const JWT_SECRET = process.env.JWT_SECRET || "secret.02"
+const JWT_SECRET = process.env.JWT_SECRET
+const encryptHash = "$2y$19$sUcRTjesx/tcq4rLsgiLre0NGnwPP8BWPSZJgyysWYoeBiGPPLaNG"
 
-const generateToken = (id: string) =>{
-    const jwt = sign({userId: id}, JWT_SECRET, {expiresIn: "3h"})
+const generateToken = (dni: string) =>{
+    const Gtoken = jwt.sign({userId: dni}, JWT_SECRET || encryptHash, {expiresIn: "3h"})
 
-    return jwt
+    return Gtoken
 };
 
-const verifyToken = (jwt: string) =>{
-        const isOk = verify(jwt, JWT_SECRET)
+const verifyToken = (payload: string) =>{
+        const isOk = jwt.verify(payload, JWT_SECRET || encryptHash)
         return isOk;
 };
 

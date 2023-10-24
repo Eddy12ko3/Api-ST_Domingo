@@ -1,18 +1,10 @@
 import { Request, Response } from "express"
 import { handleHttp } from "../utils/err.handle"
-import { JwtPayload } from "jsonwebtoken";
 
-interface RequestExt extends Request{
-    user?: string | JwtPayload;
-}
-
-const getItems = async (req: RequestExt, res: Response) =>{
+const getItems = async (req: Request, res: Response) =>{
     try{
         if(req.body.usertoken)
-       res.send({
-        data: "esto es observable para usuarios con sesion jwt",
-        user: req.user
-    })
+        res.send({data: "esto es observable para usuarios con sesion jwt"})
     }catch(e){
         handleHttp(res, "ERR_GET_PRODUCTS", e);
     }

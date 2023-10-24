@@ -12,8 +12,8 @@ const getProduct = async (req: Request, res: Response) =>{
             return res.json({message:"registro no encontrado"});
         }
         
-    }catch(e){
-        handleHttp(res, "ERR_GET_PRODUCT", e);
+    }catch(e: any){
+        handleHttp(res, "ERR_GET_PRODUCT", e.message);
     }
 }
 
@@ -26,8 +26,8 @@ const getProducts = async (req: Request, res: Response) =>{
             return res.json({message:"No hay registros"});
         }
     
-    }catch(e){
-        handleHttp(res, "ERR_GET_PRODUCTS", e);
+    }catch(e: any){
+        handleHttp(res, "ERR_GET_PRODUCTS", e.message);
     }
 }
 
@@ -40,8 +40,8 @@ const updateProduct = async (req: Request, res: Response) =>{
         }else{
             res.status(500).json({error: "error updating product"})
         }
-    }catch(e){
-        handleHttp(res, "ERR_UPDATE_PRODUCT", e);
+    }catch(e: any){
+        handleHttp(res, "ERR_UPDATE_PRODUCT", e.message);
     }
 }
 
@@ -49,10 +49,9 @@ const postProduct = async (request: Request, res: Response) =>{
     try{
         const {nombre, precio, cantidad, estado} = request.body
         const response = await InsertProduct({name: nombre, price: precio, quantity: cantidad, state: estado})
-        
-        return res.status(200).json(response)
-    }catch(e){
-        handleHttp(res, "ERR_POST_PRODUCT", e)
+        return res.status(200).json({message: "producto insertado correctamente"})
+    }catch(e: any){
+        handleHttp(res, "ERR_POST_PRODUCT", e.message)
     }
 }
 
@@ -61,12 +60,12 @@ const deleteProduct = async (req: Request, res: Response) =>{
         const {id} = req.params; 
         const response = await DeleteProduct(id);
         if(response.affected && response.affected >0){
-            res.status(200).json({message: "Product deleted successfully"});
+            res.status(200).json({message: "Producto borrado correctamente"});
         }else{
             res.status(404).json({message: "Product not found"});
         }
-    }catch(e){
-        handleHttp(res, "ERR_DELETE_PRODUCT", e)
+    }catch(e: any){
+        handleHttp(res, "ERR_DELETE_PRODUCT", e.message);
     }
 }
 

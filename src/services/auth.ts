@@ -1,7 +1,6 @@
 import { AppDataSource } from "../app.config";
 import { Auth } from "../interfaces/auth.interface";
 import { User } from "../interfaces/user.interface";
-import { PersonaDB } from "../models/persona";
 import { SexoDB } from "../models/sexo";
 import { TipoDocumentoDB } from "../models/tipo_documento";
 import { UserDB } from "../models/user";
@@ -10,60 +9,42 @@ import { generateToken } from "../utils/jwt.handle";
 
 const registerNewUser = async ({dni, password, name, lastname, date_birth, gender, document}: User) =>{
     const checksIs = await AppDataSource.getRepository(UserDB).findOneBy({ dni });
-    if(checksIs) return "already registered";
+    if(checksIs) throw new Error("ALREADY_REGISTERED");
     
-    // const genderid = await AppDataSource.getRepository(SexoDB)
-    // .createQueryBuilder('sexodb')
-    // .select('sexodb.genderId')
-    // .where('sexodb.description = :description', { description: gender })
-    // .getOne();
-
-    // if(genderid == null) return "gender no found";
-
-    // const tipoDocId = await AppDataSource.getRepository(TipoDocumentoDB)
-    // .createQueryBuilder('tipodoc')
-    // .select('tipodoc.tipoDocId')
-    // .where('tipodoc.description = :description', { description: document})
-    // .getOne();
-
-    // if(tipoDocId == null) return "tipoDoc no found";
-
     const genderObj = await AppDataSource.getRepository(SexoDB)
     .findOne({where: {genderId: gender}})
 
-    if(!genderObj) return "gender not found"
+    if(!genderObj) throw new Error("GENDER_NOT_FOUND");
 
     const documentObj = await AppDataSource.getRepository(TipoDocumentoDB)
     .findOne({where: {tipoDocId: document}})
 
-    if(!documentObj) return "document not found"
+    if(!documentObj) throw new Error("DOCUMENT_NOT_FOUND");
     
-    const newPerson = new PersonaDB();
-    newPerson.name = name;
-    newPerson.lastname = lastname;
-    newPerson.date_birth = date_birth;
-    newPerson.gender = genderObj;
-    newPerson.tipoDocumento = documentObj;
+    const newUser = new UserDB();
+    newUser.name = name;
+    newUser.lastname = lastname;
+    newUser.date_birth = date_birth;
+    newUser.gender = genderObj;
+    newUser.tipoDocumento = documentObj;
 
     const passHash = await encrypt(password);
 
-    const newUser = new UserDB();
     newUser.dni = dni;
     newUser.password = passHash;
-    newUser.persons = [newPerson]
 
     const responseInsert = await AppDataSource.getRepository(UserDB).save(newUser);
-    return responseInsert
+    return responseInsert 
 }
 
 const loginUser = async ({dni, password}: Auth) =>{
     const user = await AppDataSource.getRepository(UserDB).findOneBy({ dni });
-    if(!user) return "not found user";
+    if(!user) throw new Error("USER_NOT_FOUND");
 
     const passwordHash = user.password
     const isCorrect = await verified(password, passwordHash);
 
-    if(!isCorrect) return "password is incorrect"
+    if(!isCorrect) throw new Error("PASSWORD_INCORRECT");
 
     const token = generateToken(user.dni.toString())
 
