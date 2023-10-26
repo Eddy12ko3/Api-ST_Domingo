@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { workersService } from "../services/trabajadores";
+import { workersService } from "../services/trabajadores.service";
 import { handleHttp } from "../utils/err.handle";
 
 class WorkersController{
@@ -26,9 +26,11 @@ class WorkersController{
         try{
             const response = await workersService.GetWorkers();
             if(response){
-                return res.status(200).json(response);
+                return res.status(200)
+                .json(response);
             }else{
-                return res.json({message:"No hay registros"});
+                return res.status(404)
+                .json({message:"No hay registros"});
             }
         }catch(e: any){
             handleHttp(res, "ERR_GET_WORKERS", e.message);
@@ -41,9 +43,11 @@ class WorkersController{
             const{dni, nombre, password} = req.body; 
             const response = await workersService.UpdateWorker(id, {dni, nombre, password});
             if(response){
-                return res.status(200).json(response);
+                return res.status(200)
+                .json(response);
             }else{
-                return res.json({message:"No hay registros"});
+                return res.status(404)
+                .json({message:"No hay registros"});
             }
         }catch(e: any){
             handleHttp(res, "ERR_UPDATE_WORKERS", e.message);

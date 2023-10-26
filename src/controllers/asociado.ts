@@ -1,5 +1,5 @@
 import { Request, Response } from "express"
-import { associateService } from "../services/asociados";
+import { associateService } from "../services/asociados.service";
 import { handleHttp } from "../utils/err.handle";
 
 class AssociateController{
@@ -11,10 +11,18 @@ class AssociateController{
         return this.instance
     }
 
-    postAssociates = async (request: Request, res: Response) =>{
+    postAssociates = async (req: Request, res: Response) =>{
         try{
-            const {folio, dni, name, lastname, date_birth, gender, document} = request.body
-            const response = await associateService.InsertAssociate({folio: folio, dni: dni, name: name, lastname: lastname, date_birth: date_birth, gender: gender, document: document})
+            const {folio, dni, name, lastname, date_birth, gender, document} = req.body
+            const response = await associateService.InsertAssociate({
+                folio: folio, 
+                dni: dni, 
+                name: name, 
+                lastname: lastname, 
+                date_birth: date_birth, 
+                gender: gender, 
+                document: document
+            });
             
             return res.status(200).json(response)
         }catch(e: any){
@@ -27,7 +35,7 @@ class AssociateController{
         try{
             
         }catch(e){
-            handleHttp(res, "ERR_GET_PRODUCT", e);
+            handleHttp(res, "ERR_GET_ASSOCIATE", e);
         }
     }
     
@@ -53,7 +61,7 @@ class AssociateController{
                 console.log(response)
                 res.status(200).json({success: "modificado correctamente"})
             }else{
-                res.status(500).json({error: "error updating product"})
+                res.status(500).json({error: "error updating associate"})
             }
         }catch(e: any){
             handleHttp(res, "ERR_UPDATE_ASSOCIATES", e.message);

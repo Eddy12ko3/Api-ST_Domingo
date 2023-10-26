@@ -62,38 +62,43 @@ class AssociateService{
     };
     
     UpdateAssociates = async (id: string, {folio, dni, name, lastname, date_birth, gender, document}: Associate) =>{
-        const genderObj = await AppDataSource.getRepository(SexoDB)
+        try{
+            const genderObj = await AppDataSource.getRepository(SexoDB)
             .findOne({where: {genderId: gender}})
     
-        if(!genderObj) throw new Error("GENDER_NOT_FOUND");
-    
-        const documentObj = await AppDataSource.getRepository(TipoDocumentoDB)
-            .findOne({where: {tipoDocId: document}})
-    
-        if(!documentObj) throw new Error("DOCUMENT_NOT_FOUND");
+            if(!genderObj) throw new Error("GENDER_NOT_FOUND");
         
-        const personObj = await AppDataSource.getRepository(PersonaDB)
-            .findOne({where: {personId: parseInt(id)}})
+            const documentObj = await AppDataSource.getRepository(TipoDocumentoDB)
+                .findOne({where: {tipoDocId: document}})
+        
+            if(!documentObj) throw new Error("DOCUMENT_NOT_FOUND");
             
-        if(!personObj) throw new Error("PERSON_NOT_FOUND");
+            const personObj = await AppDataSource.getRepository(PersonaDB)
+                .findOne({where: {personId: parseInt(id)}})
+                
+            if(!personObj) throw new Error("PERSON_NOT_FOUND");
 
-        personObj.name = name;
-        personObj.lastname = lastname;
-        personObj.date_birth = date_birth;
-        personObj.gender = genderObj;
-        personObj.tipoDocumento = documentObj;
-    
-        const associateObj = await AppDataSource.getRepository(AssociatesDB)
-            .findOne({where: {associateId: parseInt(id)}})
+            personObj.name = name;
+            personObj.lastname = lastname;
+            personObj.date_birth = date_birth;
+            personObj.gender = genderObj;
+            personObj.tipoDocumento = documentObj;
         
-        if(!associateObj) throw new Error("ASSOCIATE_NOT_FOUND");
+            const associateObj = await AppDataSource.getRepository(AssociatesDB)
+                .findOne({where: {associateId: parseInt(id)}})
+            
+            if(!associateObj) throw new Error("ASSOCIATE_NOT_FOUND");
 
-        associateObj.dni = dni;
-        associateObj.folio = folio;
-        associateObj.persons = personObj;
-    
-        const responseAssociates = await AppDataSource.getRepository(AssociatesDB).save(associateObj);
-        return responseAssociates
+            associateObj.dni = dni;
+            associateObj.folio = folio;
+            associateObj.persons = personObj;
+        
+            const responseAssociates = await AppDataSource.getRepository(AssociatesDB).save(associateObj);
+            return responseAssociates
+        }catch(e: any){
+            throw new Error(e.message)
+        }
+        
     };
     
     async DeleteAssociate(id: string){

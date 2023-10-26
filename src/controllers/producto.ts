@@ -1,6 +1,6 @@
 import { Request, Response } from "express"
 import { handleHttp } from "../utils/err.handle"
-import {productService} from "../services/producto";
+import {productService} from "../services/producto.service";
 
 class ProductController{
     private static instance: ProductController;
@@ -42,7 +42,38 @@ class ProductController{
     updateProduct = async (req: Request, res: Response) =>{
         try{
             const {id} = req.params; 
-            const response = await productService.UpdateProduct(id, req.body);
+            const {
+                code, 
+                name, 
+                details, 
+                marca, 
+                unit, 
+                priceDistributor, 
+                priceProduct, 
+                image, 
+                commission, 
+                tax, 
+                expired, 
+                stock_min, 
+                stock_max, 
+                status
+            } = req.body
+            const response = await productService.UpdateProduct(id, {
+                code: code, 
+                name: name, 
+                details: details, 
+                marca: marca, 
+                unit: unit, 
+                priceDistributor: priceDistributor, 
+                priceProduct: priceProduct, 
+                image: image, 
+                commission: commission, 
+                tax: tax, 
+                expired: expired, 
+                stock_min: stock_min, 
+                stock_max: stock_max, 
+                status: status
+            });
             if(response){
                 res.status(200).json({success: "modificado correctamente"})
             }else{
@@ -53,10 +84,40 @@ class ProductController{
         }
     }
     
-    postProduct = async (request: Request, res: Response) =>{
+    postProduct = async (req: Request, res: Response) =>{
         try{
-            const {nombre, precio, cantidad, estado} = request.body
-            const response = await productService.InsertProduct({name: nombre, price: precio, quantity: cantidad, state: estado})
+            const {
+                code, 
+                name, 
+                details, 
+                marca, 
+                unit, 
+                priceDistributor, 
+                priceProduct, 
+                image, 
+                commission, 
+                tax, 
+                expired, 
+                stock_min, 
+                stock_max, 
+                status
+            } = req.body
+            const response = await productService.InsertProduct({
+                code: code, 
+                name: name, 
+                details: details, 
+                marca: marca, 
+                unit: unit, 
+                priceDistributor: priceDistributor, 
+                priceProduct: priceProduct, 
+                image: image, 
+                commission: commission, 
+                tax: tax, 
+                expired: expired, 
+                stock_min: stock_min, 
+                stock_max: stock_max, 
+                status: status
+            })
             return res.status(200).json({message: "producto insertado correctamente"})
         }catch(e: any){
             handleHttp(res, "ERR_POST_PRODUCT", e.message)
@@ -67,7 +128,7 @@ class ProductController{
         try{
             const {id} = req.params; 
             const response = await productService.DeleteProduct(id);
-            if(response.affected && response.affected >0){
+            if(response){
                 res.status(200).json({message: "Producto borrado correctamente"});
             }else{
                 res.status(404).json({message: "Product not found"});
