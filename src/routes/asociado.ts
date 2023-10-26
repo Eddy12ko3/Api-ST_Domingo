@@ -1,13 +1,13 @@
 import { Router, Request, Response } from "express";
 import { logMiddleware } from "../middleware/log";
 import { checkJwt } from "../middleware/session";
-import { deleteAssociates, getAssociate, getAssociates, postAssociates, updateAssociates } from "../controllers/asociado";
+import { associateController } from "../controllers/asociado";
 
 const router = Router()
-router.get("/load", getAssociates);
-router.get("/load/:id", getAssociate);
-router.post("/create", postAssociates);
-router.put("/:id", updateAssociates);
-router.delete("/:id", deleteAssociates);
+router.get("/load", associateController.getAssociates);
+router.get("/load/:id", associateController.getAssociate);
+router.post("/create", associateController.postAssociates);
+router.put("/:id", associateController.updateAssociates);
+router.delete("/:id", associateController.deleteAssociates);
 
 export{router}

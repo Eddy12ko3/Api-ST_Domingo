@@ -5,7 +5,7 @@ const router = Router()
 router.get("/load", workerController.GetWorkers);
 router.get("/load/:id", );
 router.post("/create", workerController.PostWorker);
-router.put("/:id", );
-router.delete("/:id", );
+router.put("/:id", workerController.UpdateWorker);
+router.delete("/:id", workerController.DeleteWorker);
 
 export{router}
