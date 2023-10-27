@@ -17,7 +17,7 @@ import { WorkersDB } from "./models/trabajadores";
 export const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
-    port: 3307,
+    port: 3306,
     username: "root",
     password: "root",
     database: "apitest",

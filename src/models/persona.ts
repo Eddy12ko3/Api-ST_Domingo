@@ -15,6 +15,7 @@ import { TipoDocumentoDB } from "./tipo_documento";
 import { DetailPaymentDB } from "./detalle_pago";
 import { AddressDB } from "./direccion";
 import { CellPhoneDB } from "./celular";
+import { StandsDB } from "./puestos";
 
 @Entity()
 export class PersonaDB{
@@ -85,14 +86,14 @@ export class PersonaDB{
             name: 'addressId',
             referencedColumnName: 'addressId',
         }
-    })
+    } )
     addresses: AddressDB[];
 
     @ManyToMany(()=> CellPhoneDB, (cellphone) => cellphone.persons,{
         cascade: true,
     })
     @JoinTable({
-        name: 'person_db_cellPhones_cellphone_db',
+        name: 'person_db_cellphones_cellphone_db',
         joinColumn: {
             name: 'personId',
             referencedColumnName: 'personId',
@@ -104,4 +105,6 @@ export class PersonaDB{
     })
     cellPhones: CellPhoneDB[];
     
-} 
+    @ManyToMany(()=> StandsDB, (stands) => stands.persons)
+    stands: StandsDB[];
+}

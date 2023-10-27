@@ -7,7 +7,7 @@ const router = Router()
 router.get("/load", associateController.getAssociates);
 router.get("/load/:id", associateController.getAssociate);
 router.post("/create", associateController.postAssociates);
-router.put("/:id", associateController.updateAssociates);
+router.put("/update/:id", associateController.updateAssociates);
 router.delete("/:id", associateController.deleteAssociates);
 
 export{router}

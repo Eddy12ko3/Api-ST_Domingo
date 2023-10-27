@@ -1,4 +1,6 @@
-export interface Person{
+import { Stands } from "./puesto.interface";
+
+export interface Person extends Stands{
     name: string;
     lastname: string;
     date_birth: Date;

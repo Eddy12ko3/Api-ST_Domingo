@@ -4,6 +4,7 @@ import { AssociatesDB } from "../models/asociados";
 import { CellPhoneDB } from "../models/celular";
 import { AddressDB } from "../models/direccion";
 import { PersonaDB } from "../models/persona";
+import { StandsDB } from "../models/puestos";
 import { SexoDB } from "../models/sexo";
 import { TipoDocumentoDB } from "../models/tipo_documento";
 
@@ -27,15 +28,24 @@ class AssociateService{
         direccion,
         celular, 
         operador,
+        code
     }: Associate) => {
         try{
             const genderObj = await AppDataSource.getRepository(SexoDB)
-            .findOne({where: {genderId: gender}})
+            .findOne({
+                where: {
+                    genderId: gender
+                }
+            })
         
             if(!genderObj) throw new Error("GENDER_NOT_FOUND");
         
             const documentObj = await AppDataSource.getRepository(TipoDocumentoDB)
-            .findOne({where: {tipoDocId: document}})
+            .findOne({
+                where: {
+                    tipoDocId: document
+                }
+            })
         
             if(!documentObj) throw new Error("DOCUMENT_NOT_FOUND");
             
@@ -56,13 +66,18 @@ class AssociateService{
             newPerson.addresses = [newDireccion]
             newPerson.cellPhones = [newcelular];
 
+            const newStand = new StandsDB();
+            newStand.code = code;
+            newStand.persons = [newPerson];
+
             const newAssociate = new AssociatesDB();
             newAssociate.folio = folio;
             newAssociate.dni = dni;
             newAssociate.persons = newPerson;
             
-            const responseInsert = await AppDataSource.getRepository(AssociatesDB).save(newAssociate);
-            return responseInsert
+            const responseInsert = await AppDataSource.getRepository(AssociatesDB).save(newAssociate)
+            return responseInsert 
+
         }catch(e: any){
             throw new Error(e.message)
         }
@@ -74,9 +89,8 @@ class AssociateService{
             const responseAssociates = await AppDataSource.getRepository(AssociatesDB)
             .find({
                 relations: {
-                    persons: true
-                    
-                }
+                    persons: true,
+                },
             })
     
             return responseAssociates;
@@ -107,7 +121,9 @@ class AssociateService{
             personObj.date_birth = date_birth;
             personObj.gender = genderObj;
             personObj.tipoDocumento = documentObj;
-        
+            
+            await AppDataSource.getRepository(PersonaDB).save(personObj)
+
             const associateObj = await AppDataSource.getRepository(AssociatesDB)
                 .findOne({where: {associateId: parseInt(id)}})
             
@@ -115,8 +131,7 @@ class AssociateService{
 
             associateObj.dni = dni;
             associateObj.folio = folio;
-            associateObj.persons = personObj;
-        
+            
             const responseAssociates = await AppDataSource.getRepository(AssociatesDB).save(associateObj);
             return responseAssociates
         }catch(e: any){

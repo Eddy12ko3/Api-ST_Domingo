@@ -1,4 +1,9 @@
-import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, 
+    Entity, 
+    JoinTable, 
+    ManyToMany, 
+    PrimaryGeneratedColumn 
+} from "typeorm";
 import { PersonaDB } from "./persona";
 
 @Entity()

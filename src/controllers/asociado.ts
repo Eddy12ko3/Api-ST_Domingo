@@ -24,6 +24,7 @@ class AssociateController{
                 direccion,
                 celular,
                 operador,
+                code
             } = req.body
             const response = await associateService.InsertAssociate({
                 folio: folio, 
@@ -36,6 +37,7 @@ class AssociateController{
                 direccion: direccion,
                 celular: celular,
                 operador: operador,
+                code: code
             });
             console.log(response)
             return res.status(200).json(response)

@@ -27,7 +27,19 @@ export class StandsDB{
     @JoinColumn({name: "sectorId"})
     sector: SectorDB;
 
-    @ManyToMany(() => PersonaDB)
-    @JoinTable()
+    @ManyToMany(() => PersonaDB, (person) => person.stands, {
+        cascade: true
+    })
+    @JoinTable({
+        name: 'stands_db_persons_person_db',
+        joinColumn: {
+            name: 'standId',
+            referencedColumnName: 'standId'
+        },
+        inverseJoinColumn: {
+            name: 'personId',
+            referencedColumnName: 'personId'
+        }
+    })
     persons: PersonaDB[]
 }

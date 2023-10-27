@@ -1,5 +1,5 @@
 import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { PersonaDB } from "./persona";
+import { StandsDB } from "./puestos";
 
 @Entity()
 export class FieldsDB{
@@ -9,7 +9,9 @@ export class FieldsDB{
     @Column()
     nameField: string;
 
-    @OneToOne(() => PersonaDB, (person) => person.personId)
-    @JoinColumn({name: "personId"})
-    persons: PersonaDB[];
+    @OneToOne(() => StandsDB, (stand) => stand.standId, {
+        cascade: true
+    })
+    @JoinColumn({name: "standId"})
+    stands: StandsDB;
 }
