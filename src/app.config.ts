@@ -4,7 +4,7 @@ import { ProductoDB  } from "./models/producto";
 import { PersonaDB } from "./models/persona";
 import { SexoDB } from "./models/sexo";
 import { TipoDocumentoDB } from "./models/tipo_documento";
-import { cellPhoneDB } from "./models/celular";
+import { CellPhoneDB } from "./models/celular";
 import { FieldsDB } from "./models/rubros";
 import { AddressDB } from "./models/direccion";
 import { SectorDB } from "./models/sector";
@@ -17,7 +17,7 @@ import { WorkersDB } from "./models/trabajadores";
 export const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
-    port: 3306,
+    port: 3307,
     username: "root",
     password: "root",
     database: "apitest",
@@ -29,7 +29,7 @@ export const AppDataSource = new DataSource({
         PersonaDB, 
         SexoDB, 
         TipoDocumentoDB, 
-        cellPhoneDB,
+        CellPhoneDB,
         FieldsDB,
         AddressDB, 
         SectorDB,

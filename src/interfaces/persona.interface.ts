@@ -4,4 +4,7 @@ export interface Person{
     date_birth: Date;
     gender: number;
     document: number
+    direccion: string
+    celular: number,
+    operador: string
 }

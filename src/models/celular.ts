@@ -2,7 +2,7 @@ import { Column, Entity, JoinTable, ManyToMany, PrimaryGeneratedColumn } from "t
 import { PersonaDB } from "./persona";
 
 @Entity()
-export class cellPhoneDB{
+export class CellPhoneDB{
     @PrimaryGeneratedColumn("increment")
     cellPhoneid: number
 
@@ -12,7 +12,6 @@ export class cellPhoneDB{
     @Column()
     operator: string
 
-    @ManyToMany(() => PersonaDB)
-    @JoinTable()
+    @ManyToMany(() => PersonaDB, (person) => person.cellPhones)
     persons: PersonaDB[]
 }

@@ -1,6 +1,8 @@
 import { AppDataSource } from "../app.config";
 import { Associate } from "../interfaces/asociados.interface";
 import { AssociatesDB } from "../models/asociados";
+import { CellPhoneDB } from "../models/celular";
+import { AddressDB } from "../models/direccion";
 import { PersonaDB } from "../models/persona";
 import { SexoDB } from "../models/sexo";
 import { TipoDocumentoDB } from "../models/tipo_documento";
@@ -14,7 +16,18 @@ class AssociateService{
         return this.instance;
     }
 
-    InsertAssociate = async ({folio, dni, name, lastname, date_birth, gender, document}: Associate) => {
+    InsertAssociate = async ({
+        folio, 
+        dni, 
+        name, 
+        lastname, 
+        date_birth, 
+        gender, 
+        document,
+        direccion,
+        celular, 
+        operador,
+    }: Associate) => {
         try{
             const genderObj = await AppDataSource.getRepository(SexoDB)
             .findOne({where: {genderId: gender}})
@@ -25,19 +38,29 @@ class AssociateService{
             .findOne({where: {tipoDocId: document}})
         
             if(!documentObj) throw new Error("DOCUMENT_NOT_FOUND");
-        
+            
+            const newDireccion = new AddressDB()
+            newDireccion.description = direccion
+            
+            const newcelular = new CellPhoneDB();
+            newcelular.cellNumber = celular;
+            newcelular.operator = operador;
+
             const newPerson = new PersonaDB();
             newPerson.name = name;
             newPerson.lastname = lastname;
             newPerson.date_birth = date_birth;
             newPerson.gender = genderObj;
             newPerson.tipoDocumento = documentObj;
-        
+
+            newPerson.addresses = [newDireccion]
+            newPerson.cellPhones = [newcelular];
+
             const newAssociate = new AssociatesDB();
             newAssociate.folio = folio;
             newAssociate.dni = dni;
             newAssociate.persons = newPerson;
-        
+            
             const responseInsert = await AppDataSource.getRepository(AssociatesDB).save(newAssociate);
             return responseInsert
         }catch(e: any){
@@ -52,6 +75,7 @@ class AssociateService{
             .find({
                 relations: {
                     persons: true
+                    
                 }
             })
     

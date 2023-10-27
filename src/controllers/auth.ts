@@ -8,7 +8,6 @@ class AuthController{
         if(!AuthController.instance){
             this.instance = new AuthController(); 
         }
-
         return this.instance;
     }
     registerCtrl = async ({body}: Request, res: Response) =>{
@@ -23,7 +22,7 @@ class AuthController{
                 document
             } = body;
             const responseUser = await authService.registerNewUser({
-                dni, 
+                dni: dni, 
                 password: password, 
                 name: name, 
                 lastname: lastname, 

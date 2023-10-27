@@ -13,7 +13,18 @@ class AssociateController{
 
     postAssociates = async (req: Request, res: Response) =>{
         try{
-            const {folio, dni, name, lastname, date_birth, gender, document} = req.body
+            const {
+                folio, 
+                dni, 
+                name, 
+                lastname, 
+                date_birth, 
+                gender, 
+                document,
+                direccion,
+                celular,
+                operador,
+            } = req.body
             const response = await associateService.InsertAssociate({
                 folio: folio, 
                 dni: dni, 
@@ -21,9 +32,12 @@ class AssociateController{
                 lastname: lastname, 
                 date_birth: date_birth, 
                 gender: gender, 
-                document: document
+                document: document,
+                direccion: direccion,
+                celular: celular,
+                operador: operador,
             });
-            
+            console.log(response)
             return res.status(200).json(response)
         }catch(e: any){
             console.log(e.message);

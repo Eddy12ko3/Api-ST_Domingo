@@ -28,13 +28,7 @@ class WorkersService{
     async GetWorkers (){
         try{
             const responseWorkers = await AppDataSource.getRepository(WorkersDB)
-                    .find({
-                        select:{
-                            dni: true,
-                            password: true,
-                            nombre: true
-                        }
-                    })
+                    .find()
             return responseWorkers;
         }catch(e: any){
             throw new Error(e.message)

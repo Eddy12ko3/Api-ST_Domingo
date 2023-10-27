@@ -9,7 +9,6 @@ export class AddressDB{
     @Column()
     description: string;
 
-    @ManyToMany(() => PersonaDB)
-    @JoinTable()
+    @ManyToMany(() => PersonaDB, (person)=> person.addresses)
     persons: PersonaDB[]
 }
