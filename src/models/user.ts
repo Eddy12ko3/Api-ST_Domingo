@@ -1,34 +1,58 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
 import { SexoDB } from "./sexo";
 import { TipoDocumentoDB } from "./tipo_documento";
+import { NumdocumentDB } from "./n_documento";
 
 @Entity()
-@Unique(["dni"])
 export class UserDB{
     @PrimaryGeneratedColumn('increment')
     userId: number;
-    @Column()
-    dni: number;
-    @Column()
+
+    @Column({
+        type: 'varchar',
+        nullable: false
+    })
     password: string;
-    
-    @Column()
+
+    @Column({
+        type: 'varchar',
+        length: '100',
+        default: ''
+    })
     name: string;
 
-    @Column()
+    @Column({
+        type: "varchar",
+        length: '100',
+        default: ""
+    })
     lastname: string;
 
     @Column()
     date_birth: Date;
 
-    @Column({default: 1})
-    state: number;
-    
+    @Column({
+        type: 'boolean',
+        default: true
+    })
+    state: boolean;
+
+    @CreateDateColumn({
+        type: "timestamp", 
+        default: () => "CURRENT_TIMESTAMP(6)" 
+    }) // Campo de creación
+    created_at: Date;
+
+    @UpdateDateColumn({ 
+        type: "timestamp", 
+        default: () => "CURRENT_TIMESTAMP(6)", 
+        onUpdate: "CURRENT_TIMESTAMP(6)" 
+    }) // Campo de actualización
+    updated_at: Date;
+
     @ManyToOne(() => SexoDB, sexo => sexo.user)
     @JoinColumn({ name: "genderId" })
     gender: SexoDB;
 
-    @ManyToOne(() => TipoDocumentoDB, (tipoDocumento) => tipoDocumento.users)
-    @JoinColumn({ name: "tipoDocId"})
-    tipoDocumento: TipoDocumentoDB;
+    
 }

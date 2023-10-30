@@ -36,11 +36,7 @@ export class PersonaDB{
     })
     lastname: string;
 
-    @Column({
-        type: 'varchar',
-        length: '50',
-        default: ''
-    })
+    @Column()
     date_birth: Date;
 
     @Column({
@@ -65,10 +61,6 @@ export class PersonaDB{
     @ManyToOne(() => SexoDB, sexo => sexo.person)
     @JoinColumn({ name: "genderId" })
     gender: SexoDB;
-
-    @ManyToOne(() => TipoDocumentoDB, (tipoDocumento) => tipoDocumento.persons)
-    @JoinColumn({ name: "tipoDocId"})
-    tipoDocumento: TipoDocumentoDB;
 
     @OneToMany(() => DetailPaymentDB, (detailpayment) => detailpayment.person)
     detailpayment: DetailPaymentDB[];

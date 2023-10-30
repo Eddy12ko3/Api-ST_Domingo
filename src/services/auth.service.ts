@@ -1,6 +1,7 @@
 import { AppDataSource } from "../app.config";
 import { Auth } from "../interfaces/auth.interface";
 import { User } from "../interfaces/user.interface";
+import { NumdocumentDB } from "../models/n_documento";
 import { SexoDB } from "../models/sexo";
 import { TipoDocumentoDB } from "../models/tipo_documento";
 import { UserDB } from "../models/user";
@@ -16,18 +17,26 @@ class AuthService{
 
         return this.instance;
     }
-    registerNewUser = async ({dni, password, name, lastname, date_birth, gender, document}: User) =>{
+    registerNewUser = async ({numDocument, password, name, lastname, date_birth, gender, document}: User) =>{
         try{
-            const checksIs = await AppDataSource.getRepository(UserDB).findOneBy({ dni });
+            const checksIs = await AppDataSource.getRepository(NumdocumentDB).findOneBy({ numDocument });
             if(checksIs) throw new Error("ALREADY_REGISTERED");
             
             const genderObj = await AppDataSource.getRepository(SexoDB)
-            .findOne({where: {genderId: gender}})
+                .findOne({
+                    where: {
+                        genderId: gender
+                    }
+                });
         
             if(!genderObj) throw new Error("GENDER_NOT_FOUND");
         
             const documentObj = await AppDataSource.getRepository(TipoDocumentoDB)
-            .findOne({where: {tipoDocId: document}})
+                .findOne({
+                    where: {
+                        tipoDocId: document
+                    }
+                });
         
             if(!documentObj) throw new Error("DOCUMENT_NOT_FOUND");
             
@@ -36,14 +45,18 @@ class AuthService{
             newUser.lastname = lastname;
             newUser.date_birth = date_birth;
             newUser.gender = genderObj;
-            newUser.tipoDocumento = documentObj;
-        
+            
             const passHash = await encrypt(password);
-        
-            newUser.dni = dni;
             newUser.password = passHash;
+            
+            await AppDataSource.getRepository(UserDB).save(newUser);
+            
+            const newNumDocument = new NumdocumentDB();
+            newNumDocument.numDocument = numDocument;
+            newNumDocument.tipoDocumento = documentObj;
+            newNumDocument.user = newUser;
         
-            const responseInsert = await AppDataSource.getRepository(UserDB).save(newUser);
+            const responseInsert = await AppDataSource.getRepository(NumdocumentDB).save(newNumDocument);
             return responseInsert;
 
         }catch(e: any){
@@ -52,17 +65,28 @@ class AuthService{
         
     }
     
-    loginUser = async ({dni, password}: Auth) =>{
+    loginUser = async ({numDocument, password}: Auth) =>{
         try{
-            const user = await AppDataSource.getRepository(UserDB).findOneBy({ dni });
+            const user = await AppDataSource.getRepository(NumdocumentDB).findOne({ where: {
+                    numDocument: numDocument
+                },
+                relations: {
+                    user: true
+                },
+                select: {
+                    user: {
+                        password: true
+                    }
+                }
+            });
             if(!user) throw new Error("USER_NOT_FOUND");
-        
-            const passwordHash = user.password
+
+            const passwordHash = user.user.password
             const isCorrect = await verified(password, passwordHash);
         
             if(!isCorrect) throw new Error("PASSWORD_INCORRECT");
         
-            const token = generateToken(user.dni.toString())
+            const token = generateToken(user.numDocument.toString())
         
             return token;
         }catch(e: any){

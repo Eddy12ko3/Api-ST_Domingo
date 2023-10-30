@@ -15,7 +15,7 @@ class AssociateController{
         try{
             const {
                 folio, 
-                dni, 
+                numDocument, 
                 name, 
                 lastname, 
                 date_birth, 
@@ -28,7 +28,7 @@ class AssociateController{
             } = req.body
             const response = await associateService.InsertAssociate({
                 folio: folio, 
-                dni: dni, 
+                numDocument: numDocument, 
                 name: name, 
                 lastname: lastname, 
                 date_birth: date_birth, 
@@ -39,7 +39,6 @@ class AssociateController{
                 operador: operador,
                 code: code
             });
-            console.log(response)
             return res.status(200).json(response)
         }catch(e: any){
             console.log(e.message);
@@ -72,12 +71,41 @@ class AssociateController{
     updateAssociates = async (req: Request, res: Response) =>{
         try{
             const {id} = req.params; 
-            const response = await associateService.UpdateAssociates(id, req.body);
+            const {
+                folio, 
+                numDocument, 
+                name, 
+                lastname, 
+                date_birth, 
+                gender, 
+                document,
+                direccion,
+                celular,
+                operador,
+                code
+            } = req.body
+            const response = await associateService.UpdateAssociates(id, {
+                folio: folio, 
+                numDocument: numDocument, 
+                name: name, 
+                lastname: lastname, 
+                date_birth: date_birth, 
+                gender: gender, 
+                document: document,
+                direccion: direccion,
+                celular: celular,
+                operador: operador,
+                code: code
+            });
             if(response){
                 console.log(response)
-                res.status(200).json({success: "modificado correctamente"})
+                res.status(200).json({
+                    success: "modificado correctamente"
+                })
             }else{
-                res.status(500).json({error: "error updating associate"})
+                res.status(500).json({
+                    error: "error updating associate"
+                })
             }
         }catch(e: any){
             handleHttp(res, "ERR_UPDATE_ASSOCIATES", e.message);
@@ -90,9 +118,13 @@ class AssociateController{
             const {id} = req.params; 
             const response = await associateService.DeleteAssociate(id);
             if(response){
-                res.status(200).json({message: "Asociado borrado correctamente"});
+                res.status(200).json({
+                    message: "Asociado borrado correctamente"
+                });
             }else{
-                res.status(404).json({message: "Asociado not found"});
+                res.status(404).json({
+                    message: "Asociado not found"
+                });
             }
         }catch(e){
             handleHttp(res, "ERR_DELETE_PRODUCT", e)

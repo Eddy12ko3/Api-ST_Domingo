@@ -13,11 +13,13 @@ import { StandsDB } from "./models/puestos";
 import { AssociatesDB } from "./models/asociados";
 import { DetailPaymentDB } from "./models/detalle_pago";
 import { WorkersDB } from "./models/trabajadores";
+import { NumdocumentDB } from "./models/n_documento";
+import { OperatorDB } from "./models/operador";
 
 export const AppDataSource = new DataSource({
     type: "mysql",
     host: "localhost",
-    port: 3306,
+    port: 3307,
     username: "root",
     password: "root",
     database: "apitest",
@@ -37,7 +39,9 @@ export const AppDataSource = new DataSource({
         StandsDB,
         AssociatesDB,
         DetailPaymentDB,
-        WorkersDB
+        WorkersDB,
+        NumdocumentDB,
+        OperatorDB
     ],
     subscribers: [],
     migrations: [],

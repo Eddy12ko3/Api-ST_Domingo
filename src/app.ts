@@ -5,6 +5,7 @@ import { router } from "./routes";
 import { AppDataSource } from "./app.config";
 import { insertGenero } from "./services/sexo.service";
 import { insertTipoDoc } from "./services/tipo_document.service";
+import { insertOperator } from "./services/operador.service";
 
 const PORT = process.env.PORT || 3000
 const app = express()
@@ -18,6 +19,10 @@ AppDataSource.initialize().then(async ()=>{
     insertGenero('femenino');
     insertTipoDoc('dni');
     insertTipoDoc('carnet de extranjeria');
+    insertOperator("bitel");
+    insertOperator("entel");
+    insertOperator("movistar");
+    insertOperator("claro");
     console.info("---->Database Connected<-----")
 }).catch((err) =>{
     throw new Error(err)

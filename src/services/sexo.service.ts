@@ -12,6 +12,5 @@ export const insertGenero = async (sexo: string) => {
         const genero = new SexoDB();
         genero.description = sexo;
         await sexorepo.save(genero);
-        console.log('Insertamos a _', genero)
     }
 }

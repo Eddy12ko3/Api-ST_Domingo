@@ -1,4 +1,4 @@
 export interface Auth{
-    dni: number;
+    numDocument: number;
     password: string;
 }

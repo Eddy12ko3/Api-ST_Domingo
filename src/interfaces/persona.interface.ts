@@ -8,5 +8,5 @@ export interface Person extends Stands{
     document: number
     direccion: string
     celular: number,
-    operador: string
+    operador: number
 }

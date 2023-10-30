@@ -13,7 +13,7 @@ class AuthController{
     registerCtrl = async ({body}: Request, res: Response) =>{
         try{
             const {
-                dni, 
+                numDocument, 
                 password, 
                 name, 
                 lastname, 
@@ -22,7 +22,7 @@ class AuthController{
                 document
             } = body;
             const responseUser = await authService.registerNewUser({
-                dni: dni, 
+                numDocument: numDocument, 
                 password: password, 
                 name: name, 
                 lastname: lastname, 
@@ -40,11 +40,11 @@ class AuthController{
     loginCtrl = async ({body}: Request, res: Response) =>{
         try{
             const {
-                dni, 
+                numDocument, 
                 password
             } = body;
             const responseUser = await authService.loginUser({
-                dni: dni, 
+                numDocument: numDocument, 
                 password: password
             })
             return res.status(200).json(responseUser)
