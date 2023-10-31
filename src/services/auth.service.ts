@@ -17,7 +17,15 @@ class AuthService{
 
         return this.instance;
     }
-    registerNewUser = async ({numDocument, password, name, lastname, date_birth, gender, document}: User) =>{
+    registerNewUser = async ({
+        numDocument, 
+        password, 
+        name, 
+        lastname, 
+        date_birth, 
+        gender, 
+        document
+    }: User) =>{
         try{
             const checksIs = await AppDataSource.getRepository(NumdocumentDB).findOneBy({ numDocument });
             if(checksIs) throw new Error("ALREADY_REGISTERED");
@@ -65,7 +73,10 @@ class AuthService{
         
     }
     
-    loginUser = async ({numDocument, password}: Auth) =>{
+    loginUser = async ({
+        numDocument, 
+        password
+    }: Auth) =>{
         try{
             const user = await AppDataSource.getRepository(NumdocumentDB).findOne({ where: {
                     numDocument: numDocument
@@ -94,6 +105,5 @@ class AuthService{
         }
     };
 }
-
 
 export const authService = AuthService.getInstance()

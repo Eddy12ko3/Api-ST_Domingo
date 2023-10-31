@@ -1,6 +1,6 @@
-export interface Workers{
+import { AuthWorker } from "./auth-workers.interface";
+
+export interface Workers extends AuthWorker{
     nombre: string
-    dni: number
-    password: string
 }
 

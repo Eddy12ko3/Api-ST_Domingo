@@ -1,6 +1,9 @@
 import { AppDataSource } from "../app.config";
+import { AuthWorker } from "../interfaces/auth-workers.interface";
 import { Workers } from "../interfaces/trabajadores";
 import { WorkersDB } from "../models/trabajadores";
+import { encrypt, verified } from "../utils/bcrypt.handle";
+import { generateToken } from "../utils/jwt.handle";
 
 class WorkersService{
     private static instance: WorkersService;
@@ -10,19 +13,43 @@ class WorkersService{
         }
         return this.instance;
     }
-    
-    async InsertWorker (worker: Workers){
+
+    async InsertWorker ({
+        dni,
+        nombre,
+        password
+    }: Workers){
         try{
             const newWorker = new WorkersDB();
-            newWorker.dni = worker.dni;
-            newWorker.nombre = worker.nombre;
-            newWorker.password = worker.password;
+            newWorker.dni = dni;
+            newWorker.nombre = nombre;
+
+            const passHash = await encrypt(password);
+            newWorker.password = passHash;
             
             const responseInsert = await AppDataSource.getRepository(WorkersDB).save(newWorker);
             return responseInsert 
         }catch(e: any){
             throw new Error(e.message)
         }
+    }
+
+    async LogWorker({
+        dni, 
+        password
+    }: AuthWorker){
+        const user = await AppDataSource.getRepository(WorkersDB)
+            .findOneBy({dni})
+        if(!user) throw new Error("WORKER_NOT_FOUND")
+
+        const passwordHash = user.password
+        const isCorrect = await verified(password, passwordHash)
+
+        if(!isCorrect) throw new Error("PASSWORD_INCORRECT");
+        
+            const token = generateToken(user.dni.toString())
+        
+            return token;
     }
 
     async GetWorkers (){
@@ -35,28 +62,38 @@ class WorkersService{
         }
     }
 
-    async UpdateWorker (id: string, worker: Workers){
+    async UpdateWorker (id: string, {
+        dni,
+        nombre,
+        password
+    }: Workers){
         try{
             const workerObj = await AppDataSource.getRepository(WorkersDB)
-                .findOne({where: {workedId: parseInt(id)}});
-            
+                .findOne({where: {
+                    workedId: parseInt(id)
+                    }
+                });
             if(!workerObj) throw new Error("WORKER_NOT_FOUND");
-    
-            workerObj.dni = worker.dni;
-            workerObj.nombre = worker.nombre;
-            workerObj.password = worker.password;
-            
+
+            workerObj.dni = dni;
+            workerObj.nombre = nombre;
+            workerObj.password = password;
+
             const responseUpdate = await AppDataSource.getRepository(WorkersDB).save(workerObj);
             return responseUpdate
         }catch(e: any){
             throw new Error(e.message)
         }
-    }   
+    }
 
     async DeleteWorker(id: string){
         try{
             const workerDelete = await AppDataSource.getRepository(WorkersDB)
-            .findOne({where: {workedId: parseInt(id)}});
+            .findOne({
+                where: {
+                    workedId: parseInt(id)
+                }
+            });
             if(!workerDelete) throw new Error("WORKER_NOT_FOUND");
     
             const responseDelete = await AppDataSource.getRepository(WorkersDB).remove(workerDelete)

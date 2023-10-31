@@ -9,9 +9,4 @@ export class FieldsDB{
     @Column()
     nameField: string;
 
-    @OneToOne(() => StandsDB, (stand) => stand.standId, {
-        cascade: true
-    })
-    @JoinColumn({name: "standId"})
-    stands: StandsDB;
 }

@@ -11,12 +11,38 @@ class WorkersController{
         return this.instance
     }
 
+    async LoginWorker(req: Request, res: Response){
+        try{
+            const {
+                dni,
+                password
+            } = req.body
+            const response = await workersService.LogWorker({
+                dni: dni, 
+                password: password
+            })
+            return res.status(200).json(response)
+        }catch(e: any){
+            handleHttp(res, "ERR_LOGIN_WORKER", e.message)
+        }
+    }
+
     async PostWorker(req: Request, res: Response){
         try{
-            const{dni, nombre, password} = req.body; 
-            const response = await workersService.InsertWorker({dni, nombre, password});
+            const{
+                dni, 
+                nombre, 
+                password 
+            } = req.body; 
+            const response = await workersService.InsertWorker({
+                dni,
+                nombre,
+                password
+            });
             return res.status(200)
-                .json({message: "trabajador insertado correctamente"});
+                .json({
+                    message: "trabajador insertado correctamente"
+                });
         }catch(e: any){
             handleHttp(res, "ERR_POST_WORKER", e.message);
         }
@@ -30,7 +56,9 @@ class WorkersController{
                 .json(response);
             }else{
                 return res.status(404)
-                .json({message:"No hay registros"});
+                .json({
+                    message:"No hay registros"
+                });
             }
         }catch(e: any){
             handleHttp(res, "ERR_GET_WORKERS", e.message);

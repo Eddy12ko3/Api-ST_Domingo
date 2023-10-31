@@ -1,5 +1,6 @@
 import { AppDataSource } from "../app.config";
 import { Associate } from "../interfaces/asociados.interface";
+import { AreasMTSDB } from "../models/areas";
 import { AssociatesDB } from "../models/asociados";
 import { CellPhoneDB } from "../models/celular";
 import { AddressDB } from "../models/direccion";
@@ -7,6 +8,8 @@ import { NumdocumentDB } from "../models/n_documento";
 import { OperatorDB } from "../models/operador";
 import { PersonaDB } from "../models/persona";
 import { StandsDB } from "../models/puestos";
+import { FieldsDB } from "../models/rubros";
+import { SectorDB } from "../models/sector";
 import { SexoDB } from "../models/sexo";
 import { TipoDocumentoDB } from "../models/tipo_documento";
 
@@ -30,9 +33,15 @@ class AssociateService{
         direccion,
         celular, 
         operador,
-        code
+        code, 
+        area, 
+        sector,
+        rubro
     }: Associate) => {
         try{
+            const checksIs = await AppDataSource.getRepository(NumdocumentDB).findOneBy({ numDocument });
+            if(checksIs) throw new Error("ALREADY_REGISTERED");
+            
             const genderObj = await AppDataSource.getRepository(SexoDB)
             .findOne({
                 where: {
@@ -57,11 +66,10 @@ class AssociateService{
             });
             if(!operatorObj) throw new Error("OPERATOR_NOT_FOUND");
             
+            
             const newnumDocument = new NumdocumentDB();
             newnumDocument.numDocument = numDocument;
             newnumDocument.tipoDocumento = documentObj;
-            
-            await AppDataSource.getRepository(NumdocumentDB).save(newnumDocument);
 
             const newDireccion = new AddressDB()
             newDireccion.description = direccion;
@@ -79,10 +87,23 @@ class AssociateService{
             newPerson.addresses = [newDireccion]
             newPerson.cellPhones = [newcelular];
             
+            const newArea = new AreasMTSDB()
+            newArea.size = area;
+
+            const newSector = new SectorDB();
+            newSector.code = sector;
+
+            const newField = new FieldsDB();
+            newField.nameField = rubro;
+
             const newStand = new StandsDB();
             newStand.code = code;
             newStand.persons = [newPerson];
-            
+            newStand.areas = newArea
+            newStand.sector = newSector
+            newStand.rubro = newField
+
+            await AppDataSource.getRepository(NumdocumentDB).save(newnumDocument);     
             await AppDataSource.getRepository(StandsDB).save(newStand);
 
             const newAssociate = new AssociatesDB();
@@ -91,6 +112,7 @@ class AssociateService{
             newAssociate.persons = newPerson;
             
             const responseInsert = await AppDataSource.getRepository(AssociatesDB).save(newAssociate)
+            
             return responseInsert 
 
         }catch(e: any){
@@ -106,8 +128,15 @@ class AssociateService{
                 relations: {
                     persons: {
                         addresses: true,
-                        cellPhones: true,
-                        stands: true,
+                        cellPhones: {
+                            operators: true
+                        },
+                        stands: {
+                            areas: true,
+                            sector: true,
+                            
+                        }
+                        
                     }
                 }
                 
@@ -126,7 +155,14 @@ class AssociateService{
         lastname, 
         date_birth, 
         gender, 
-        document
+        document,
+        direccion,
+        celular, 
+        operador,
+        code, 
+        area, 
+        sector,
+        rubro
     }: Associate) =>{
         try{
             const genderObj = await AppDataSource.getRepository(SexoDB)

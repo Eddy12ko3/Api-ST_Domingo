@@ -24,7 +24,10 @@ class AssociateController{
                 direccion,
                 celular,
                 operador,
-                code
+                code,  
+                area,
+                sector,
+                rubro
             } = req.body
             const response = await associateService.InsertAssociate({
                 folio: folio, 
@@ -37,11 +40,13 @@ class AssociateController{
                 direccion: direccion,
                 celular: celular,
                 operador: operador,
-                code: code
+                code: code,
+                area: area,
+                sector: sector,
+                rubro: rubro
             });
-            return res.status(200).json(response)
+            return res.status(200).json({message: "Agregado Correctamente"})
         }catch(e: any){
-            console.log(e.message);
             handleHttp(res, "ERR_POST_ASSOCIATES", e.message)
         }
     }
@@ -82,7 +87,10 @@ class AssociateController{
                 direccion,
                 celular,
                 operador,
-                code
+                code,
+                area,
+                sector,
+                rubro
             } = req.body
             const response = await associateService.UpdateAssociates(id, {
                 folio: folio, 
@@ -95,7 +103,10 @@ class AssociateController{
                 direccion: direccion,
                 celular: celular,
                 operador: operador,
-                code: code
+                code: code,
+                area: area,
+                sector: sector,
+                rubro: rubro
             });
             if(response){
                 console.log(response)
