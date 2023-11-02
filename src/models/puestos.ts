@@ -1,12 +1,12 @@
 import { 
-    Column, 
-    Entity, 
-    JoinColumn, 
-    JoinTable, 
-    ManyToMany, 
-    ManyToOne, 
-    OneToOne, 
-    PrimaryGeneratedColumn 
+    Column,
+    Entity,
+    JoinColumn,
+    JoinTable,
+    ManyToMany,
+    ManyToOne,
+    OneToOne,
+    PrimaryGeneratedColumn
 } from "typeorm";
 import { AreasMTSDB } from "./areas";
 import { SectorDB } from "./sector";
@@ -14,12 +14,12 @@ import { PersonaDB } from "./persona";
 import { FieldsDB } from "./rubros";
 
 @Entity()
-export class StandsDB{
+export class StandsDB{  
     @PrimaryGeneratedColumn("increment")
     standId: number;
 
     @Column()
-    code: string; 
+    code: string;
 
     @ManyToOne(()=> AreasMTSDB, (areas) => areas.stands, {
         cascade: true
@@ -33,26 +33,12 @@ export class StandsDB{
     @JoinColumn({name: "sectorId"})
     sector: SectorDB;
 
-    @ManyToMany(() => PersonaDB, (person) => person.stands, {
-        cascade: true
-    })
-
     @OneToOne(() => FieldsDB, (field) => field.fieldId, {
         cascade: true
     })
     @JoinColumn({name: "fieldId"})
     rubro: FieldsDB;
 
-    @JoinTable({
-        name: 'stands_db_persons_person_db',
-        joinColumn: {
-            name: 'standId',
-            referencedColumnName: 'standId'
-        },
-        inverseJoinColumn: {
-            name: 'personId',
-            referencedColumnName: 'personId'
-        }
-    })
+    @ManyToMany(() => PersonaDB, (person) => person.stands)
     persons: PersonaDB[]
 }

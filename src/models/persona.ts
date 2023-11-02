@@ -97,6 +97,19 @@ export class PersonaDB{
     })
     cellPhones: CellPhoneDB[];
     
-    @ManyToMany(()=> StandsDB, (stands) => stands.persons)
+    @ManyToMany(()=> StandsDB, (stands) => stands.persons,{
+        cascade: true,
+    })
+    @JoinTable({
+        name: 'person_db_persons_stands_db',
+        joinColumn: {
+            name: 'personId',
+            referencedColumnName: 'personId'
+        },
+        inverseJoinColumn: {
+            name: 'standId',
+            referencedColumnName: 'standId'
+        }
+    })
     stands: StandsDB[];
 }

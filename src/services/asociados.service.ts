@@ -66,7 +66,6 @@ class AssociateService{
             });
             if(!operatorObj) throw new Error("OPERATOR_NOT_FOUND");
             
-            
             const newnumDocument = new NumdocumentDB();
             newnumDocument.numDocument = numDocument;
             newnumDocument.tipoDocumento = documentObj;
@@ -78,15 +77,6 @@ class AssociateService{
             newcelular.cellNumber = celular;
             newcelular.operators = operatorObj;
 
-            const newPerson = new PersonaDB();
-            newPerson.name = name;
-            newPerson.lastname = lastname;
-            newPerson.date_birth = date_birth;
-            newPerson.gender = genderObj;
-
-            newPerson.addresses = [newDireccion]
-            newPerson.cellPhones = [newcelular];
-            
             const newArea = new AreasMTSDB()
             newArea.size = area;
 
@@ -98,13 +88,21 @@ class AssociateService{
 
             const newStand = new StandsDB();
             newStand.code = code;
-            newStand.persons = [newPerson];
             newStand.areas = newArea
             newStand.sector = newSector
             newStand.rubro = newField
 
+            const newPerson = new PersonaDB();
+            newPerson.name = name;
+            newPerson.lastname = lastname;
+            newPerson.date_birth = date_birth;
+            newPerson.gender = genderObj;
+            newPerson.stands = [newStand]
+
+            newPerson.addresses = [newDireccion]
+            newPerson.cellPhones = [newcelular];
+        
             await AppDataSource.getRepository(NumdocumentDB).save(newnumDocument);     
-            await AppDataSource.getRepository(StandsDB).save(newStand);
 
             const newAssociate = new AssociatesDB();
             newAssociate.folio = folio;
@@ -126,6 +124,9 @@ class AssociateService{
             const responseAssociates = await AppDataSource.getRepository(AssociatesDB)
             .find({
                 relations: {
+                    numDocument: {
+                        tipoDocumento: true
+                    },
                     persons: {
                         addresses: true,
                         cellPhones: {
@@ -134,10 +135,10 @@ class AssociateService{
                         stands: {
                             areas: true,
                             sector: true,
-                            
+                            rubro: true
                         }
                         
-                    }
+                    },
                 }
                 
             })
@@ -182,7 +183,93 @@ class AssociateService{
                 })
         
             if(!documentObj) throw new Error("DOCUMENT_NOT_FOUND");
+
+            const operatorObj = await AppDataSource.getRepository(OperatorDB)
+                .findOne({
+                    where: {
+                        operatorId: operador
+                    }
+                })
+    
+            if(!operatorObj) throw new Error("OPERATOR_NOT_FOUND");
+
+            const addressesObj = await AppDataSource.getRepository(AddressDB)
+                .findOne({ 
+                    where: {
+                        addressId: parseInt(id)
+                    }
+                })
+            if(!addressesObj) throw new Error("ADDRESS_NOT_FOUND");
+
+            addressesObj.description = direccion
             
+            await AppDataSource.getRepository(AddressDB).save(addressesObj)
+
+            const cellphoneObj = await AppDataSource.getRepository(CellPhoneDB)
+                .findOne({
+                    where: {
+                        cellPhoneid: parseInt(id)
+                    }
+                })
+                
+            if(!cellphoneObj) throw new Error("CELLPHONE_NOT_FOUND");
+
+            cellphoneObj.cellNumber = celular
+            
+            await AppDataSource.getRepository(CellPhoneDB).save(cellphoneObj)
+
+            const areaObj = await AppDataSource.getRepository(AreasMTSDB)
+                .findOne({
+                    where: {
+                        areaId: parseInt(id)
+                    }
+                })
+                
+            if(!areaObj) throw new Error("AREA_NOT_FOUND");
+            
+            areaObj.size = area;
+            
+            await AppDataSource.getRepository(AreasMTSDB).save(areaObj)
+
+            const sectorObj = await AppDataSource.getRepository(SectorDB)
+                .findOne({
+                    where: {
+                        sectorId: parseInt(id)
+                    }
+                })
+                
+            if(!sectorObj) throw new Error("SECTOR_NOT_FOUND");
+            
+            sectorObj.code = sector;
+            
+            await AppDataSource.getRepository(SectorDB).save(sectorObj)
+
+            const rubroObj = await AppDataSource.getRepository(FieldsDB)
+                .findOne({
+                    where: {
+                        fieldId: parseInt(id)
+                    }
+                })
+                
+            if(!rubroObj) throw new Error("FIELD_NOT_FOUND");
+            
+            rubroObj.nameField = rubro;
+            
+            await AppDataSource.getRepository(FieldsDB).save(rubroObj)
+
+            const standObj = await AppDataSource.getRepository(StandsDB)
+                .findOne({
+                    where: {
+                        standId: parseInt(id)
+                    }
+                })
+                
+            if(!standObj) throw new Error("STANDS_NOT_FOUND");
+                
+            standObj.code = code;
+            
+            await AppDataSource.getRepository(StandsDB).save(standObj)
+
             const personObj = await AppDataSource.getRepository(PersonaDB)
                 .findOne({
                     where: {
@@ -233,13 +320,35 @@ class AssociateService{
     
     async DeleteAssociate(id: string){
         try{
-            const associateDelete = await AppDataSource.getRepository(AssociatesDB)
-            .findOne({where: {associateId: parseInt(id)}})
 
+            const associateDelete = await AppDataSource.getRepository(AssociatesDB)
+            .findOne({
+                where: {
+                    associateId: parseInt(id)
+                },
+                relations: {
+                    numDocument: {
+                        tipoDocumento: true
+                    },
+                    persons: {
+                        addresses: true,
+                        cellPhones: {
+                            operators: true
+                        },
+                        stands: {
+                            areas: true,
+                            sector: true,
+                            rubro: true
+                        }
+                        
+                    },
+                }
+            })
+
+               
             if(!associateDelete) throw new Error("ASSOCIATE_NOT_FOUND")
 
             const responseDelete = await AppDataSource.getRepository(AssociatesDB).remove(associateDelete);
-
             return responseDelete;
         }catch(e: any){
             throw new Error(e.message)

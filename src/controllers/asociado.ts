@@ -62,7 +62,7 @@ class AssociateController{
     getAssociates = async (req: Request, res: Response) =>{
         try{
             const response = await associateService.GetAssociates();
-            if(response){
+            if(response.length > 0){
                 return res.status(200).json(response);
             }else{
                 return res.json({message:"No hay registros"});
@@ -137,8 +137,8 @@ class AssociateController{
                     message: "Asociado not found"
                 });
             }
-        }catch(e){
-            handleHttp(res, "ERR_DELETE_PRODUCT", e)
+        }catch(e: any){
+            handleHttp(res, "ERR_DELETE_ASSOCIATE", e.message)
         }
     }
 }
