@@ -17,7 +17,7 @@ export class CellPhoneDB{
     @Column()
     cellNumber: number
 
-    @ManyToMany(() => PersonaDB, (person) => person.cellPhones)
+    @ManyToMany(() => PersonaDB, (person) => person.cellPhones, {onDelete: 'CASCADE'})
     persons: PersonaDB[]
 
     @ManyToOne(() => OperatorDB, (operator) => operator.cellphone)

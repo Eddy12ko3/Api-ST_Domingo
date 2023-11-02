@@ -7,6 +7,7 @@ import {
     ManyToMany, 
     ManyToOne, 
     OneToMany, 
+    OneToOne, 
     PrimaryGeneratedColumn, 
     UpdateDateColumn 
 } from "typeorm";
@@ -16,6 +17,7 @@ import { DetailPaymentDB } from "./detalle_pago";
 import { AddressDB } from "./direccion";
 import { CellPhoneDB } from "./celular";
 import { StandsDB } from "./puestos";
+import { AssociatesDB } from "./asociados";
 
 @Entity()
 export class PersonaDB{
@@ -58,6 +60,12 @@ export class PersonaDB{
     }) // Campo de actualización
     updated_at: Date;
 
+    @OneToOne(() => AssociatesDB, (associate) => associate.persons, {
+        onDelete: 'CASCADE'
+    })
+    @JoinColumn({name: "associateId"})
+    asocciate: AssociatesDB
+    
     @ManyToOne(() => SexoDB, sexo => sexo.person)
     @JoinColumn({ name: "genderId" })
     gender: SexoDB;

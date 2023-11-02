@@ -9,6 +9,6 @@ export class AreasMTSDB{
     @Column()
     size: string;
 
-    @OneToMany(() => StandsDB, (stands) => stands.areas)
+    @OneToMany(() => StandsDB, (stands) => stands.areas, {onDelete: 'CASCADE'})
     stands: StandsDB[];
 }

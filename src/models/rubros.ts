@@ -9,4 +9,7 @@ export class FieldsDB{
     @Column()
     nameField: string;
 
+    @OneToOne(() => StandsDB, (stand) => stand.rubro, {onDelete: 'CASCADE'})
+    stand: StandsDB
+
 }

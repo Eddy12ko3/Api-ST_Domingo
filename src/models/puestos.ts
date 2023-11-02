@@ -33,12 +33,12 @@ export class StandsDB{
     @JoinColumn({name: "sectorId"})
     sector: SectorDB;
 
-    @OneToOne(() => FieldsDB, (field) => field.fieldId, {
+    @OneToOne(() => FieldsDB, (field) => field.stand, {
         cascade: true
     })
     @JoinColumn({name: "fieldId"})
     rubro: FieldsDB;
 
-    @ManyToMany(() => PersonaDB, (person) => person.stands)
+    @ManyToMany(() => PersonaDB, (person) => person.stands, {onDelete: 'CASCADE'})
     persons: PersonaDB[]
 }

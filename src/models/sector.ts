@@ -9,7 +9,7 @@ export class SectorDB{
     @Column()
     code: string; 
 
-    @OneToMany(() => StandsDB, (stands) => stands.sector)
+    @OneToMany(() => StandsDB, (stands) => stands.sector, {onDelete: 'CASCADE'})
     stands: StandsDB[];
 
 }

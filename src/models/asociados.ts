@@ -12,13 +12,11 @@ export class AssociatesDB{
     })
     folio: number
 
-    @OneToOne(() => PersonaDB, (person) => person.personId, {
-        cascade: true,  
+    @OneToOne(() => PersonaDB, (person) => person.asocciate, {
+        cascade: true, 
     })
-    @JoinColumn({name: "personId"})
     persons: PersonaDB
 
-    @OneToOne(() => NumdocumentDB, (numdoc) => numdoc.numDocId)
-    @JoinColumn({name: "numDocId"})
+    @OneToOne(() => NumdocumentDB, (numdoc) => numdoc.asocciate, {cascade: true})
     numDocument: NumdocumentDB
 }

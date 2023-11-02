@@ -100,9 +100,7 @@ class AssociateService{
             newPerson.stands = [newStand]
 
             newPerson.addresses = [newDireccion]
-            newPerson.cellPhones = [newcelular];
-        
-            await AppDataSource.getRepository(NumdocumentDB).save(newnumDocument);     
+            newPerson.cellPhones = [newcelular];    
 
             const newAssociate = new AssociatesDB();
             newAssociate.folio = folio;
@@ -320,35 +318,20 @@ class AssociateService{
     
     async DeleteAssociate(id: string){
         try{
-
-            const associateDelete = await AppDataSource.getRepository(AssociatesDB)
-            .findOne({
+            const associateDelete = await AppDataSource.getRepository(AssociatesDB).findOne({
+                relations: ['persons'],
                 where: {
                     associateId: parseInt(id)
                 },
-                relations: {
-                    numDocument: {
-                        tipoDocumento: true
-                    },
-                    persons: {
-                        addresses: true,
-                        cellPhones: {
-                            operators: true
-                        },
-                        stands: {
-                            areas: true,
-                            sector: true,
-                            rubro: true
-                        }
-                        
-                    },
-                }
+
             })
+            if(!associateDelete) throw new Error("ASOCCIATE_NOT_FOUND")
 
-               
-            if(!associateDelete) throw new Error("ASSOCIATE_NOT_FOUND")
-
-            const responseDelete = await AppDataSource.getRepository(AssociatesDB).remove(associateDelete);
+            const responseDelete = await AppDataSource.getRepository(AssociatesDB).delete(associateDelete);
+            associateDelete.persons.cellPhones.forEach(async (cellphone) => await AppDataSource.getRepository(CellPhoneDB).delete(cellphone.cellPhoneid))
+            associateDelete.persons.addresses.forEach(async (address) => await AppDataSource.getRepository(AddressDB).delete(address.addressId))
+            associateDelete.persons.stands.forEach(async (stand) => await AppDataSource.getRepository(StandsDB).delete(stand.standId))
+            
             return responseDelete;
         }catch(e: any){
             throw new Error(e.message)
