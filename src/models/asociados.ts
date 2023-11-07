@@ -8,6 +8,8 @@ export class AssociatesDB{
     associateId: number
 
     @Column({
+        type: 'int', 
+        default: 0,
         nullable: false
     })
     folio: number

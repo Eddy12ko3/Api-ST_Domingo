@@ -9,7 +9,10 @@ export class NumdocumentDB{
     @PrimaryGeneratedColumn("increment")
     numDocId: number;
 
-    @Column()
+    @Column({
+        type: 'int',
+        nullable: false
+    })
     numDocument: number;
 
     @ManyToOne(() => TipoDocumentoDB, (tipoDocumento) => tipoDocumento.numdocument)

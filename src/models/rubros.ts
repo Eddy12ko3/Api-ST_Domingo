@@ -6,7 +6,10 @@ export class FieldsDB{
     @PrimaryGeneratedColumn("increment")
     fieldId: number;
 
-    @Column()
+    @Column({
+        type: 'varchar',
+        length: '100',
+    })
     nameField: string;
 
     @OneToOne(() => StandsDB, (stand) => stand.rubro, {onDelete: 'CASCADE'})

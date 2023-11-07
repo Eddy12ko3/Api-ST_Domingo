@@ -6,9 +6,13 @@ export class AddressDB{
     @PrimaryGeneratedColumn()
     addressId: number;
 
-    @Column()
+    @Column({
+        type: 'varchar',
+        length: 100,
+        default: ''
+    })
     description: string;
 
-    @ManyToMany(() => PersonaDB, (person)=> person.addresses)
+    @ManyToMany(() => PersonaDB, (person)=> person.addresses, {onDelete: 'CASCADE'})
     persons: PersonaDB[]
 }

@@ -12,7 +12,6 @@ import {
     UpdateDateColumn 
 } from "typeorm";
 import { SexoDB } from "./sexo";
-import { TipoDocumentoDB } from "./tipo_documento";
 import { DetailPaymentDB } from "./detalle_pago";
 import { AddressDB } from "./direccion";
 import { CellPhoneDB } from "./celular";

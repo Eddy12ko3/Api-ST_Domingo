@@ -8,7 +8,10 @@ export class TipoDocumentoDB{
     @PrimaryGeneratedColumn("increment")
     tipoDocId: number
 
-    @Column()
+    @Column({
+        type: 'varchar',
+        length: '50',
+    })
     description: string
 
     @OneToMany(() => NumdocumentDB, numdocument => numdocument.tipoDocumento)

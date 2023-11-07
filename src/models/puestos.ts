@@ -18,7 +18,11 @@ export class StandsDB{
     @PrimaryGeneratedColumn("increment")
     standId: number;
 
-    @Column()
+    @Column({
+        type: 'varchar',
+        length: '100',
+        nullable: false
+    })
     code: string;
 
     @ManyToOne(()=> AreasMTSDB, (areas) => areas.stands, {

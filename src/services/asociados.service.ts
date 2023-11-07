@@ -108,7 +108,6 @@ class AssociateService{
             newAssociate.persons = newPerson;
             
             const responseInsert = await AppDataSource.getRepository(AssociatesDB).save(newAssociate)
-            
             return responseInsert 
 
         }catch(e: any){
@@ -319,19 +318,30 @@ class AssociateService{
     async DeleteAssociate(id: string){
         try{
             const associateDelete = await AppDataSource.getRepository(AssociatesDB).findOne({
-                relations: ['persons'],
                 where: {
                     associateId: parseInt(id)
                 },
-
+                relations: {
+                    persons: {
+                        addresses: true,
+                        cellPhones: true,
+                        stands: true
+                    }
+                },
             })
             if(!associateDelete) throw new Error("ASOCCIATE_NOT_FOUND")
 
-            const responseDelete = await AppDataSource.getRepository(AssociatesDB).delete(associateDelete);
             associateDelete.persons.cellPhones.forEach(async (cellphone) => await AppDataSource.getRepository(CellPhoneDB).delete(cellphone.cellPhoneid))
             associateDelete.persons.addresses.forEach(async (address) => await AppDataSource.getRepository(AddressDB).delete(address.addressId))
             associateDelete.persons.stands.forEach(async (stand) => await AppDataSource.getRepository(StandsDB).delete(stand.standId))
-            
+
+            const associate = await AppDataSource.getRepository(AssociatesDB).findOne({
+                where: {
+                    associateId: parseInt(id)
+                }
+            })
+            if(!associate) throw new Error("ASOCCIATE_NOT_FOUND")
+            const responseDelete = await AppDataSource.getRepository(AssociatesDB).delete(associate);
             return responseDelete;
         }catch(e: any){
             throw new Error(e.message)

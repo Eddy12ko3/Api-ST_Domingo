@@ -14,7 +14,10 @@ export class CellPhoneDB{
     @PrimaryGeneratedColumn("increment")
     cellPhoneid: number
 
-    @Column()
+    @Column({
+        type: 'int',
+        default: 0
+    })
     cellNumber: number
 
     @ManyToMany(() => PersonaDB, (person) => person.cellPhones, {onDelete: 'CASCADE'})

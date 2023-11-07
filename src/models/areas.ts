@@ -6,7 +6,11 @@ export class AreasMTSDB{
     @PrimaryGeneratedColumn("increment")
     areaId: number;
 
-    @Column()
+    @Column({
+        type: 'varchar',
+        length: '50',
+        default: ''
+    })
     size: string;
 
     @OneToMany(() => StandsDB, (stands) => stands.areas, {onDelete: 'CASCADE'})

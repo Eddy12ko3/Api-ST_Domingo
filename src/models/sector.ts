@@ -6,7 +6,10 @@ export class SectorDB{
     @PrimaryGeneratedColumn("increment")
     sectorId: number;
 
-    @Column()
+    @Column({
+        type: 'varchar',
+        length: '50',
+    })
     code: string; 
 
     @OneToMany(() => StandsDB, (stands) => stands.sector, {onDelete: 'CASCADE'})

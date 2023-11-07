@@ -7,7 +7,10 @@ export class SexoDB{
     @PrimaryGeneratedColumn("increment")
     genderId: number
 
-    @Column()
+    @Column({
+        type: 'varchar',
+        length: '50',
+    })
     description: string
 
     @OneToMany(() => PersonaDB, persona => persona.gender)

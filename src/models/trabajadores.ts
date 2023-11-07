@@ -6,7 +6,11 @@ export class WorkersDB{
     @PrimaryGeneratedColumn("increment")
     workedId: number
 
-    @Column()
+    @Column({
+        type: 'varchar',
+        length: '100',
+        default: ''
+    })
     nombre: string
 
     @Column()

@@ -1,7 +1,14 @@
-import { Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToOne, PrimaryGeneratedColumn, Unique, UpdateDateColumn } from "typeorm";
+import { 
+    Column, 
+    CreateDateColumn, 
+    Entity, 
+    JoinColumn, 
+    ManyToOne, 
+    PrimaryGeneratedColumn, 
+    UpdateDateColumn 
+} from "typeorm";
 import { SexoDB } from "./sexo";
-import { TipoDocumentoDB } from "./tipo_documento";
-import { NumdocumentDB } from "./n_documento";
+
 
 @Entity()
 export class UserDB{
@@ -54,5 +61,4 @@ export class UserDB{
     @JoinColumn({ name: "genderId" })
     gender: SexoDB;
 
-    
 }

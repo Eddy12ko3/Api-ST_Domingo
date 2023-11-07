@@ -14,7 +14,12 @@ export class DetailPaymentDB{
     @Column()
     datePayment: Date;
 
-    @Column()
+    @Column({
+        type: 'decimal',
+        precision: 10,
+        scale: 2,
+        default: 0,
+    })
     amount: number;
 
     @ManyToOne(() => PersonaDB, (person) => person.detailpayment)
