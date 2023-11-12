@@ -74,7 +74,9 @@ class AuthService{
                 },
                 select: {
                     user: {
-                        password: true
+                        name: true,
+                        lastname: true,
+                        password: true,
                     }
                 }
             });
@@ -84,8 +86,14 @@ class AuthService{
             const isCorrect = await verified(password, passwordHash);
         
             if(!isCorrect) throw new Error("PASSWORD_INCORRECT");
-        
-            const token = generateToken(user.numDocument.toString() + user.user.name)
+            
+            const data = {
+                user: user.numDocument,
+                username: user.user.name,
+                userlastname: user.user.lastname
+            }
+            
+            const token = generateToken(JSON.stringify(data))
         
             return token;
         }catch(e: any){
