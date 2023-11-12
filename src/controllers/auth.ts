@@ -18,7 +18,6 @@ class AuthController{
                 name, 
                 lastname, 
                 date_birth, 
-                gender, 
                 document
             } = body;
             const responseUser = await authService.registerNewUser({
@@ -27,7 +26,6 @@ class AuthController{
                 name: name, 
                 lastname: lastname, 
                 date_birth: date_birth, 
-                gender: gender, 
                 document: document
             });
 

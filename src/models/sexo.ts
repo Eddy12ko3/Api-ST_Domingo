@@ -15,7 +15,4 @@ export class SexoDB{
 
     @OneToMany(() => PersonaDB, persona => persona.gender)
     person: PersonaDB[];
-
-    @OneToMany(() => UserDB, user => user.gender)
-    user: UserDB[];
 }

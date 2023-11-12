@@ -7,8 +7,6 @@ import {
     PrimaryGeneratedColumn, 
     UpdateDateColumn 
 } from "typeorm";
-import { SexoDB } from "./sexo";
-
 
 @Entity()
 export class UserDB{
@@ -56,9 +54,5 @@ export class UserDB{
         onUpdate: "CURRENT_TIMESTAMP(6)" 
     }) // Campo de actualización
     updated_at: Date;
-
-    @ManyToOne(() => SexoDB, sexo => sexo.user)
-    @JoinColumn({ name: "genderId" })
-    gender: SexoDB;
 
 }

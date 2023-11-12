@@ -2,7 +2,6 @@ import { AppDataSource } from "../app.config";
 import { Auth } from "../interfaces/auth.interface";
 import { User } from "../interfaces/user.interface";
 import { NumdocumentDB } from "../models/n_documento";
-import { SexoDB } from "../models/sexo";
 import { TipoDocumentoDB } from "../models/tipo_documento";
 import { UserDB } from "../models/user";
 import { encrypt, verified } from "../utils/bcrypt.handle";
@@ -23,21 +22,11 @@ class AuthService{
         name, 
         lastname, 
         date_birth, 
-        gender, 
         document
     }: User) =>{
         try{
             const checksIs = await AppDataSource.getRepository(NumdocumentDB).findOneBy({ numDocument });
             if(checksIs) throw new Error("ALREADY_REGISTERED");
-            
-            const genderObj = await AppDataSource.getRepository(SexoDB)
-                .findOne({
-                    where: {
-                        genderId: gender
-                    }
-                });
-        
-            if(!genderObj) throw new Error("GENDER_NOT_FOUND");
         
             const documentObj = await AppDataSource.getRepository(TipoDocumentoDB)
                 .findOne({
@@ -52,7 +41,6 @@ class AuthService{
             newUser.name = name;
             newUser.lastname = lastname;
             newUser.date_birth = date_birth;
-            newUser.gender = genderObj;
             
             const passHash = await encrypt(password);
             newUser.password = passHash;
@@ -97,7 +85,7 @@ class AuthService{
         
             if(!isCorrect) throw new Error("PASSWORD_INCORRECT");
         
-            const token = generateToken(user.numDocument.toString())
+            const token = generateToken(user.numDocument.toString() + user.user.name)
         
             return token;
         }catch(e: any){
