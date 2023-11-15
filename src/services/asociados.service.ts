@@ -126,6 +126,7 @@ class AssociateService{
                     },
                     persons: {
                         addresses: true,
+                        gender: true,
                         cellPhones: {
                             operators: true
                         },
