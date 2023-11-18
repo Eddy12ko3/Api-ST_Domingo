@@ -23,18 +23,30 @@ class DetailPaymentController{
                 amount: amount,
                 person: person
             })
-            return res.status(200).json(response)
+            if(response){
+                res.status(200).json({
+                    success: "El registro ha sido insertado correctamente"
+                })
+            }else{
+                res.status(404).json({
+                    error: "Error al registrar el registro"
+                });
+            }
         }catch(e: any){
-            handleHttp(res, "ERR_POST_PAYMENT", e.message)
+            handleHttp(res, "Error al registar un pago", e.message)
         }
     }
 
     async GetPayment(req: Request, res: Response){
         try{
             const response = await detailPaymentService.GetDetailPayment()
-            return res.status(200).json(response)
+            if(response.length > 0){
+                return res.status(200).json(response);
+            }else{
+                return res.json({message:"No hay registros"});
+            }
         }catch(e: any){
-            handleHttp(res, "ERR_GET_PAYMENT", e.message)
+            handleHttp(res, "Error al obtener los registros", e.message)
         }
     }
 
@@ -47,9 +59,17 @@ class DetailPaymentController{
                 amount: amount, 
                 person: person,
             })
-            return res.status(200).json(response)
+            if(response){
+                res.status(200).json({
+                    success: "El registro ha sido modificado correctamente"
+                })
+            }else{
+                res.status(404).json({
+                    error: "Error al modificar el registro"
+                });
+            }
         }catch(e: any){
-            handleHttp(res, "ERR_GET_PAYMENT", e.message)
+            handleHttp(res, "Error al modificar el registro de pagos", e.message)
         }
     }
 
@@ -57,9 +77,17 @@ class DetailPaymentController{
         try{
             const {id} = req.params;
             const response = await detailPaymentService.DeleteDetailPayment(id)
-            return res.status(200).json(response)
+            if(response){
+                res.status(200).json({
+                    success: "El registro ha sido eliminado correctamente"
+                })
+            }else{
+                res.status(404).json({
+                    error: "Error al eliminar el registro"
+                });
+            }
         }catch(e: any){
-            handleHttp(res, "ERR_GET_PAYMENT", e.message)
+            handleHttp(res, "Error al eliminar el registro de pagos", e.message)
         }
     }
 }

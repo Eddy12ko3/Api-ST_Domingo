@@ -28,10 +28,17 @@ class AuthController{
                 date_birth: date_birth, 
                 document: document
             });
-
-            return res.status(200).json({ message: "registrado correctamente"});
+            if(responseUser){
+                res.status(200).json({
+                    success: "Registrado correctamente"
+                })
+            }else{
+                res.status(404).json({
+                    error: "Error al registrar el usuario"
+                });
+            }
         }catch(e: any){
-            handleHttp(res, "ERR_REGISTER_USER", e.message)
+            handleHttp(res, "Error al registrar el usuario", e.message)
         }
     }
     
@@ -47,7 +54,7 @@ class AuthController{
             })
             return res.status(200).json(responseUser)
         }catch(e: any) {
-            handleHttp(res, "ERR_LOGIN_USER", e.message)
+            handleHttp(res, "Usuario o Contraseña incorrectas", e.message)
         }
     }
     

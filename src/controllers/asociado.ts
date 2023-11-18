@@ -45,17 +45,26 @@ class AssociateController{
                 sector: sector,
                 rubro: rubro
             });
-            return res.status(200).json({message: "Agregado Correctamente"})
+            if(response){
+                console.log(response)
+                res.status(200).json({
+                    success: "Asociado agregado Correctamente"
+                })
+            }else{
+                res.status(404).json({
+                    error: "Error al agregar un asociado"
+                })
+            }
         }catch(e: any){
-            handleHttp(res, "ERR_POST_ASSOCIATES", e.message)
+            handleHttp(res, "Error al agregar el asociado", e.message)
         }
     }
 
     getAssociate = async (req: Request, res: Response) =>{
         try{
             
-        }catch(e){
-            handleHttp(res, "ERR_GET_ASSOCIATE", e);
+        }catch(e: any){
+            handleHttp(res, "Error al obtener el registro", e.message);
         }
     }
     
@@ -69,7 +78,7 @@ class AssociateController{
             }
         
         }catch(e: any){
-            handleHttp(res, "ERR_GET_ASSOCIATES", e.message);
+            handleHttp(res, "Error al obtener los registros", e.message);
         }
     }
     
@@ -109,17 +118,16 @@ class AssociateController{
                 rubro: rubro
             });
             if(response){
-                console.log(response)
                 res.status(200).json({
-                    success: "modificado correctamente"
+                    success: "Asociado modificado correctamente"
                 })
             }else{
-                res.status(500).json({
-                    error: "error updating associate"
+                res.status(404).json({
+                    error: "Error al modificar un asociado"
                 })
             }
         }catch(e: any){
-            handleHttp(res, "ERR_UPDATE_ASSOCIATES", e.message);
+            handleHttp(res, "Error al modificar el asociado", e.message);
             
         }
     }
@@ -130,15 +138,15 @@ class AssociateController{
             const response = await associateService.DeleteAssociate(id);
             if(response){
                 res.status(200).json({
-                    message: "Asociado borrado correctamente"
+                    success: "Asociado borrado correctamente"
                 });
             }else{
                 res.status(404).json({
-                    message: "Asociado not found"
+                    error: "Error al eliminar un asociado"
                 });
             }
         }catch(e: any){
-            handleHttp(res, "ERR_DELETE_ASSOCIATE", e.message)
+            handleHttp(res, "Error al eliminar el asociado", e.message)
         }
     }
 }

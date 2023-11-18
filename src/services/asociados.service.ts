@@ -213,6 +213,7 @@ class AssociateService{
             if(!cellphoneObj) throw new Error("CELLPHONE_NOT_FOUND");
 
             cellphoneObj.cellNumber = celular
+            cellphoneObj.operators = operatorObj
             
             await AppDataSource.getRepository(CellPhoneDB).save(cellphoneObj)
 
@@ -284,10 +285,12 @@ class AssociateService{
             
             await AppDataSource.getRepository(PersonaDB).save(personObj)
 
-            const numDocumentObj =await AppDataSource.getRepository(NumdocumentDB)
+            const numDocumentObj = await AppDataSource.getRepository(NumdocumentDB)
                 .findOne({
                     where: {
-                        numDocId: parseInt(id)
+                        asocciate: {
+                            associateId: parseInt(id)
+                        }
                     }
                 })
             if(!numDocumentObj) throw new Error("NUM_DOCUMENT_NOT_FOUND");

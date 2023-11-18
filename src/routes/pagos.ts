@@ -4,10 +4,10 @@ import { checkJwt } from "../middleware/session";
 import { detailPaymentController } from "../controllers/pagos";
 
 const router = Router()
-router.get("/load", detailPaymentController.GetPayment)
+router.get("/load", checkJwt, detailPaymentController.GetPayment)
 router.get("/load/:id", )
-router.post("/create", detailPaymentController.InsertPayment)
-router.put("/update/:id", detailPaymentController.UpdatePayment)
-router.delete("/delete/:id", detailPaymentController.DeletePayment)
+router.post("/create", checkJwt, detailPaymentController.InsertPayment)
+router.put("/update/:id", checkJwt, detailPaymentController.UpdatePayment)
+router.delete("/delete/:id", checkJwt, detailPaymentController.DeletePayment)
 
 export{router}
