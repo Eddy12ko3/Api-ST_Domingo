@@ -1,6 +1,5 @@
-import { AuthWorker } from "./auth-workers.interface";
+import { type AuthWorker } from './auth-workers.interface';
 
-export interface Workers extends AuthWorker{
-    nombre: string
+export interface Workers extends AuthWorker {
+	nombre: string;
 }
-

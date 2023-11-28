@@ -1,6 +1,6 @@
-import { Person } from "./persona.interface";
+import { type Person } from './persona.interface';
 
 export interface Associate extends Person {
-    folio: number;
-    numDocument: number;
+	folio: number;
+	numDocument: number;
 }

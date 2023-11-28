@@ -1,4 +1,4 @@
-export interface AuthWorker{
-    dni: number
-    password: string
+export interface AuthWorker {
+	dni: number;
+	password: string;
 }

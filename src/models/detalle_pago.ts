@@ -1,28 +1,23 @@
-import { 
-    Column, 
-    Entity, 
-    JoinColumn, 
-    ManyToOne, 
-    PrimaryGeneratedColumn } from "typeorm";
-import { PersonaDB } from "./persona";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { PersonaDB } from './persona';
 
 @Entity()
-export class DetailPaymentDB{
-    @PrimaryGeneratedColumn("increment")
-    detailPaymentId: number;
+export class DetailPaymentDB {
+	@PrimaryGeneratedColumn('increment')
+	detailPaymentId: number;
 
-    @Column()
-    datePayment: Date;
+	@Column()
+	datePayment: Date;
 
-    @Column({
-        type: 'decimal',
-        precision: 10,
-        scale: 2,
-        default: 0,
-    })
-    amount: number;
+	@Column({
+		type: 'decimal',
+		precision: 10,
+		scale: 2,
+		default: 0,
+	})
+	amount: number;
 
-    @ManyToOne(() => PersonaDB, (person) => person.detailpayment)
-    @JoinColumn({name: "personId"})
-    person: PersonaDB;
+	@ManyToOne(() => PersonaDB, (person) => person.detailpayment)
+	@JoinColumn({ name: 'personId' })
+	person: PersonaDB;
 }

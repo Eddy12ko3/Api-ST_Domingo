@@ -1,5 +1,5 @@
-import { JwtPayload } from "jsonwebtoken";
+import { type JwtPayload } from 'jsonwebtoken';
 
-export interface RequestExt extends Request{
-    user?: string | JwtPayload;
+export interface RequestExt extends Request {
+	user?: string | JwtPayload;
 }

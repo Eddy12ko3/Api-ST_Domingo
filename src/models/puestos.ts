@@ -1,48 +1,50 @@
-import { 
-    Column,
-    Entity,
-    JoinColumn,
-    JoinTable,
-    ManyToMany,
-    ManyToOne,
-    OneToOne,
-    PrimaryGeneratedColumn
-} from "typeorm";
-import { AreasMTSDB } from "./areas";
-import { SectorDB } from "./sector";
-import { PersonaDB } from "./persona";
-import { FieldsDB } from "./rubros";
+import {
+	Column,
+	Entity,
+	JoinColumn,
+	JoinTable,
+	ManyToMany,
+	ManyToOne,
+	OneToOne,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
+import { AreasMTSDB } from './areas';
+import { SectorDB } from './sector';
+import { PersonaDB } from './persona';
+import { FieldsDB } from './rubros';
 
 @Entity()
-export class StandsDB{  
-    @PrimaryGeneratedColumn("increment")
-    standId: number;
+export class StandsDB {
+	@PrimaryGeneratedColumn('increment')
+	standId: number;
 
-    @Column({
-        type: 'varchar',
-        length: '100',
-        nullable: false
-    })
-    code: string;
+	@Column({
+		type: 'varchar',
+		length: '100',
+		nullable: false,
+	})
+	code: string;
 
-    @ManyToOne(()=> AreasMTSDB, (areas) => areas.stands, {
-        cascade: true
-    })
-    @JoinColumn({name: "areaId"})
-    areas: AreasMTSDB;
+	@ManyToOne(() => AreasMTSDB, (areas) => areas.stands, {
+		cascade: true,
+	})
+	@JoinColumn({ name: 'areaId' })
+	areas: AreasMTSDB;
 
-    @ManyToOne(()=> SectorDB, (sector) => sector.stands,{
-        cascade: true
-    })
-    @JoinColumn({name: "sectorId"})
-    sector: SectorDB;
+	@ManyToOne(() => SectorDB, (sector) => sector.stands, {
+		cascade: true,
+	})
+	@JoinColumn({ name: 'sectorId' })
+	sector: SectorDB;
 
-    @OneToOne(() => FieldsDB, (field) => field.stand, {
-        cascade: true
-    })
-    @JoinColumn({name: "fieldId"})
-    rubro: FieldsDB;
+	@OneToOne(() => FieldsDB, (field) => field.stand, {
+		cascade: true,
+	})
+	@JoinColumn({ name: 'fieldId' })
+	rubro: FieldsDB;
 
-    @ManyToMany(() => PersonaDB, (person) => person.stands, {onDelete: 'CASCADE'})
-    persons: PersonaDB[]
+	@ManyToMany(() => PersonaDB, (person) => person.stands, {
+		onDelete: 'CASCADE',
+	})
+	persons: PersonaDB[];
 }

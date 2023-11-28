@@ -1,18 +1,22 @@
-import { Column, Entity, JoinColumn, JoinTable, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
-import { StandsDB } from "./puestos";
+import {
+	Column,
+	Entity,
+	OneToOne,
+	PrimaryGeneratedColumn,
+} from 'typeorm';
+import { StandsDB } from './puestos';
 
 @Entity()
-export class FieldsDB{
-    @PrimaryGeneratedColumn("increment")
-    fieldId: number;
+export class FieldsDB {
+	@PrimaryGeneratedColumn('increment')
+	fieldId: number;
 
-    @Column({
-        type: 'varchar',
-        length: '100',
-    })
-    nameField: string;
+	@Column({
+		type: 'varchar',
+		length: '100',
+	})
+	nameField: string;
 
-    @OneToOne(() => StandsDB, (stand) => stand.rubro, {onDelete: 'CASCADE'})
-    stand: StandsDB
-
+	@OneToOne(() => StandsDB, (stand) => stand.rubro, { onDelete: 'CASCADE' })
+	stand: StandsDB;
 }

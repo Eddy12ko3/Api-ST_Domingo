@@ -1,9 +1,9 @@
-import { Router } from "express";
-import { personController } from "../controllers/persona";
-import { checkJwt } from "../middleware/session";
+import { Router } from 'express';
+import { personController } from '../controllers/persona';
+import { checkJwt } from '../middleware/session';
 
-const router = Router()
+const router = Router();
 
-router.get("/load", checkJwt, personController.GetPersons)
+router.get('/load', checkJwt, personController.GetPersons);
 
-export {router}
+export { router };
