@@ -5,7 +5,7 @@ import { type JwtPayload } from 'jsonwebtoken';
 interface RequestExt extends Request {
 	user?: string | JwtPayload;
 }
-const checkJwt = (req: RequestExt, res: Response, next: NextFunction) => {
+const checkJwt = (req: Request, res: Response, next: NextFunction) => {
 	try {
 		const authHeader = req.header('Authorization');
 		if (!authHeader) return res.status(401).json({ message: 'HEADER_NOT_FOUND' });
