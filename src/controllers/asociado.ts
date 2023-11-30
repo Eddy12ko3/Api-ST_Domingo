@@ -70,7 +70,7 @@ class AssociateController {
 	getAssociates = async (req: Request, res: Response) => {
 		try {
 			const response = await associateService.GetAssociates();
-			if (response) {
+			if (response.length > 0) {
 				return res.status(200).json(response);
 			} else {
 				return res.json({ message: 'No hay registros' });
