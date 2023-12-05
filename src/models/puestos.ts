@@ -5,7 +5,6 @@ import {
 	JoinTable,
 	ManyToMany,
 	ManyToOne,
-	OneToOne,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 import { AreasMTSDB } from './areas';
@@ -37,7 +36,7 @@ export class StandsDB {
 	@JoinColumn({ name: 'sectorId' })
 	sector: SectorDB;
 
-	@OneToOne(() => FieldsDB, (field) => field.stand, {
+	@ManyToOne(() => FieldsDB, (field) => field.stand, {
 		cascade: true,
 	})
 	@JoinColumn({ name: 'fieldId' })

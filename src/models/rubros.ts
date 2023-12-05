@@ -1,7 +1,7 @@
 import {
 	Column,
 	Entity,
-	OneToOne,
+	OneToMany,
 	PrimaryGeneratedColumn,
 } from 'typeorm';
 import { StandsDB } from './puestos';
@@ -17,6 +17,6 @@ export class FieldsDB {
 	})
 	nameField: string;
 
-	@OneToOne(() => StandsDB, (stand) => stand.rubro, { onDelete: 'CASCADE' })
-	stand: StandsDB;
+	@OneToMany(() => StandsDB, (stand) => stand.rubro, { onDelete: 'CASCADE' })
+	stand: StandsDB[];
 }
