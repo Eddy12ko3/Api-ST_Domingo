@@ -21,7 +21,7 @@ class DetailPaymentService {
 					personId: person,
 				},
 			});
-			if (!personObj) throw new Error('PERSON_NOT_FOUND');
+			if (!personObj) throw new Error('Persona no encontrada');
 
 			const newPayment = new DetailPaymentDB();
 			newPayment.datePayment = datepayment;
@@ -62,14 +62,14 @@ class DetailPaymentService {
 					personId: person,
 				},
 			});
-			if (!personObj) throw new Error('PERSON_NOT_FOUND');
+			if (!personObj) throw new Error('Persona no encontrada');
 
 			const detailPaymentObj = await AppDataSource.getRepository(DetailPaymentDB).findOne({
 				where: {
 					detailPaymentId: parseInt(id),
 				},
 			});
-			if (!detailPaymentObj) throw new Error('PAYMENT_NOT_FOUND');
+			if (!detailPaymentObj) throw new Error('Pagos no encontrados');
 
 			detailPaymentObj.datePayment = datepayment;
 			detailPaymentObj.amount = amount;
@@ -90,7 +90,7 @@ class DetailPaymentService {
 					detailPaymentId: parseInt(id),
 				},
 			});
-			if (!paymentdelete) throw new Error('PAYMENT_NOT_FOUND');
+			if (!paymentdelete) throw new Error('Pagos no encontrados');
 
 			const response =
 				await AppDataSource.getRepository(DetailPaymentDB).remove(paymentdelete);

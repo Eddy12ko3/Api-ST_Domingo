@@ -16,7 +16,7 @@ class PersonController {
 			const response = await personService.GetPersons();
 			res.status(200).json(response);
 		} catch (e: any) {
-			handleHttp(res, 'ERR_GET_PERSON', e.message);
+			handleHttp(res, 'Error al obtener los registos', e.message);
 		}
 	}
 }

@@ -29,7 +29,7 @@ class AuthService {
 			const checksIs = await AppDataSource.getRepository(NumdocumentDB).findOneBy({
 				numDocument,
 			});
-			if (checksIs) throw new Error('ALREADY_REGISTERED');
+			if (checksIs) throw new Error('Este Usuario ya ha sido registrado');
 
 			const documentObj = await AppDataSource.getRepository(TipoDocumentoDB).findOne({
 				where: {
@@ -37,7 +37,7 @@ class AuthService {
 				},
 			});
 
-			if (!documentObj) throw new Error('DOCUMENT_NOT_FOUND');
+			if (!documentObj) throw new Error('Documento no encontrado');
 
 			const newUser = new UserDB();
 			newUser.name = name;
@@ -79,12 +79,13 @@ class AuthService {
 					},
 				},
 			});
-			if (!user) throw new Error('USER_NOT_FOUND');
+			if (!user?.user) throw new Error('Usuario no encontrado');
+			if (!user) throw new Error('Usuario no encontrado');
 
 			const passwordHash = user.user.password;
 			const isCorrect = await verified(password, passwordHash);
 
-			if (!isCorrect) throw new Error('PASSWORD_INCORRECT');
+			if (!isCorrect) throw new Error('Contraseña incorrecta');
 
 			const data = {
 				user: user.numDocument,
