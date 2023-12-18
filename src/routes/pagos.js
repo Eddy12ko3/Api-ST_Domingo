@@ -1,0 +1,13 @@
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.router = void 0;
+const express_1 = require("express");
+const session_1 = require("../middleware/session");
+const pagos_1 = require("../controllers/pagos");
+const router = (0, express_1.Router)();
+exports.router = router;
+router.get('/load', session_1.checkJwt, pagos_1.detailPaymentController.GetPayment);
+router.get('/load/:id');
+router.post('/create', session_1.checkJwt, pagos_1.detailPaymentController.InsertPayment);
+router.put('/update/:id', session_1.checkJwt, pagos_1.detailPaymentController.UpdatePayment);
+router.delete('/delete/:id', session_1.checkJwt, pagos_1.detailPaymentController.DeletePayment);

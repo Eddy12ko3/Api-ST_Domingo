@@ -19,7 +19,7 @@ export class NumdocumentDB {
 	numDocId: number;
 
 	@Column({
-		type: 'int',
+		type: 'bigint',
 		nullable: false,
 	})
 	numDocument: number;
